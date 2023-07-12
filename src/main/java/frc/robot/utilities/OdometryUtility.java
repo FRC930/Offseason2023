@@ -54,7 +54,7 @@ public class OdometryUtility {
 
     // Back camera constants
     private static final String BACK_CAMERA_NAME = "Camera3"; 
-    private static final String BACK_CAMERA_IP_NAME = "10.9.30.33";
+    private static final String BACK_CAMERA_IP_NAME = "10.99.30.33";
     private static final int BACK_CAMERA_PIPELINE = 0;
     private static final int BACK_CAMERA_PORT_TO_FORWARD = 5803;
     private static final String BACK_CAMERA_CONFIG_FILE = "CameraConfigs/Camera3/config.json";
@@ -75,7 +75,7 @@ public class OdometryUtility {
 
     //Left camera constants
     private static final String LEFT_CAMERA_NAME = "Camera2"; 
-    private static final String LEFT_CAMERA_IP_NAME = "10.9.30.32";
+    private static final String LEFT_CAMERA_IP_NAME = "10.99.30.32";
     private static final int LEFT_CAMERA_PIPELINE = 0;
     private static final int LEFT_CAMERA_PORT_TO_FORWARD = 5802;
     private static final String LEFT_CAMERA_CONFIG_FILE = "CameraConfigs/Camera2/config.json";
@@ -95,7 +95,7 @@ public class OdometryUtility {
 
     // Right camera constants
     private static final String RIGHT_CAMERA_NAME = "Camera4"; 
-    private static final String RIGHT_CAMERA_IP_NAME = "10.9.30.34";
+    private static final String RIGHT_CAMERA_IP_NAME = "10.99.30.34";
     private static final int RIGHT_CAMERA_PIPELINE = 0;
     private static final int RIGHT_CAMERA_PORT_TO_FORWARD = 5804;
     private static final String RIGHT_CAMERA_CONFIG_FILE = "CameraConfigs/Camera4/config.json";
@@ -308,7 +308,8 @@ public class OdometryUtility {
      */
     public void updateCameraPos(Rotation2d rotation2d, SwerveModulePosition[] swerveModulePositions, Pose2d pose2d) {
         m_PoseEstimator.update(rotation2d, swerveModulePositions);
-        updateCameraPositions();
+        // TODO: Uncomment to re-enable cameras
+        // updateCameraPositions();
     }
     
 

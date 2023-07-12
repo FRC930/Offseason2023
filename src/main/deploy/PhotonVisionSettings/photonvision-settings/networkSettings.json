@@ -1,7 +1,7 @@
 {
-  "teamNumber" : 930,
+  "teamNumber" : 9930,
   "connectionType" : 1,
-  "staticIp" : "10.9.30.31",
+  "staticIp" : "10.99.30.31",
   "hostname" : "photonvision1",
   "runNTServer" : false,
   "shouldManage" : true,
