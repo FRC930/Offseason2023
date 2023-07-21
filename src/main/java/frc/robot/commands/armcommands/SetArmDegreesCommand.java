@@ -7,35 +7,7 @@ import frc.robot.subsystems.manipulator.ManipulatorSubsystem;
 public class SetArmDegreesCommand extends CommandBase{
 
     private ArmSubsystem m_arm;
-    private ManipulatorSubsystem m_manipulator;
-    private double m_manipulatorPos;
     private double m_armPos;
-
-    /**
-     * <h3>SetArmDegreesCommand</h3>
-     * 
-     * Sets the position of the shoulder motor to the desired position.
-     * @param armSubsystem The arm subsystem
-     * @param armPosition The desired arm position in degrees
-     */
-    public SetArmDegreesCommand(ArmSubsystem armSubsystem, double armPosition) {
-        m_arm = armSubsystem;
-        m_armPos = armPosition;
-        addRequirements(armSubsystem);
-    }
-
-    /**
-     * <h3>SetArmDegreesCommand</h3>
-     * 
-     * Sets the position of the wrist motor to the desired position.
-     * @param manipulatorSubsystem The manipulator subsystem
-     * @param manipulatorPosition The desired manipulator position in degrees
-     */
-    public SetArmDegreesCommand(ManipulatorSubsystem manipulatorSubsystem, double manipulatorPosition) {
-        m_manipulator = manipulatorSubsystem;
-        m_manipulatorPos = manipulatorPosition;      
-        addRequirements(manipulatorSubsystem);
-    }
 
     /**
      * <h3>SetArmDegreesCommand</h3>
@@ -46,19 +18,15 @@ public class SetArmDegreesCommand extends CommandBase{
      * @param armPosition The desired arm position in degrees
      * @param manipulatorPosition The desired manipulator position in degrees
      */
-    public SetArmDegreesCommand(ArmSubsystem armSubsystem, ManipulatorSubsystem manipulatorSubsystem, double armPosition) {
+    public SetArmDegreesCommand(ArmSubsystem armSubsystem, double armPosition) {
         m_arm = armSubsystem;
-        m_manipulator = manipulatorSubsystem;
         m_armPos = armPosition;
-        addRequirements(manipulatorSubsystem,armSubsystem);
+        addRequirements(armSubsystem);
     }
 
 
     @Override
     public void initialize() {
-        if(m_manipulator != null) {
-            m_manipulator.setPosition(m_manipulatorPos);
-        }
         if(m_arm != null) {
             m_arm.setPosition(m_armPos);
         }

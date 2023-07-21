@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
-import frc.robot.utilities.CommandFactoryUtility;
 
 public class ManipulatorSubsystem extends SubsystemBase {
     
@@ -24,11 +23,12 @@ public class ManipulatorSubsystem extends SubsystemBase {
     private double targetPosition;
     private final ManipulatorIO m_io;
 
-    public static final double ROLLER_INTAKE_SPEED = 0.8; //1.0 larger gear
-    public static final double DOUBLE_SUBSTATION_ROLLER_INTAKE_SPEED = 0.7; //1.0 larger gear
-    public static final double SHOOT_SPEED = -0.6;
-    public static final double RELEASE_SPEED = -0.35; //-0.7 larger gear //
-    public static final double HOLD_SPEED = 0.15; //0.25 larger gear
+    public static final double ROLLER_INTAKE_SPEED = 0.5; //TODO find value
+    public static final double HOLD_SPEED = 0.1; //TODO find value
+
+    public static final double LOW_SCORE_SPEED = -0.3; //TODO find value
+    public static final double MEDIUM_SCORE_SPEED = -0.6; //TODO find value
+    public static final double HIGH_SCORE_SPEED = -0.9; //TODO find value
 
     /**<h3>ManipulatorSubsystem</h3>
      * Decides desired output, in volts, for the manipulator.

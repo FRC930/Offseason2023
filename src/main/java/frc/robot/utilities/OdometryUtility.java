@@ -116,7 +116,7 @@ public class OdometryUtility {
     // Three cameras on the robot, 2 in the front, 1 on the back
     //private final CameraOnRobot m_backCamera;
     //private final CameraOnRobot m_rightCamera;
-    private final CameraOnRobot m_leftCamera;
+    // private final CameraOnRobot m_leftCamera;
 
     private SwerveDriveKinematics m_swerveDriveKinematics;
     private Rotation2d m_rotation;
@@ -182,20 +182,20 @@ public class OdometryUtility {
         //                                 BACK_CAMERA_ROTATION_PITCH,
         //                                 BACK_CAMERA_ROTATION_YAW
         //                                 );
-        m_leftCamera = new CameraOnRobot(LEFT_CAMERA_NAME, 
-                                        LEFT_CAMERA_IP_NAME, 
-                                        LEFT_CAMERA_PIPELINE, 
-                                        LEFT_CAMERA_PORT_TO_FORWARD,
-                                        LEFT_CAMERA_CONFIG_FILE,
-                                        LEFT_CAMERA_RESOLUTION_WIDTH,
-                                        LEFT_CAMERA_RESOLUTION_HEIGHT,
-                                        LEFT_CAMERA_POSITION_X,
-                                        LEFT_CAMERA_POSITION_Y,
-                                        LEFT_CAMERA_POSITION_Z,
-                                        LEFT_CAMERA_ROTATION_ROLL,
-                                        LEFT_CAMERA_ROTATION_PITCH,
-                                        LEFT_CAMERA_ROTATION_YAW
-                                        );
+        // m_leftCamera = new CameraOnRobot(LEFT_CAMERA_NAME, 
+        //                                 LEFT_CAMERA_IP_NAME, 
+        //                                 LEFT_CAMERA_PIPELINE, 
+        //                                 LEFT_CAMERA_PORT_TO_FORWARD,
+        //                                 LEFT_CAMERA_CONFIG_FILE,
+        //                                 LEFT_CAMERA_RESOLUTION_WIDTH,
+        //                                 LEFT_CAMERA_RESOLUTION_HEIGHT,
+        //                                 LEFT_CAMERA_POSITION_X,
+        //                                 LEFT_CAMERA_POSITION_Y,
+        //                                 LEFT_CAMERA_POSITION_Z,
+        //                                 LEFT_CAMERA_ROTATION_ROLL,
+        //                                 LEFT_CAMERA_ROTATION_PITCH,
+        //                                 LEFT_CAMERA_ROTATION_YAW
+        //                                 );
         // m_rightCamera = new CameraOnRobot(RIGHT_CAMERA_NAME, 
         //                                 RIGHT_CAMERA_IP_NAME, 
         //                                 RIGHT_CAMERA_PIPELINE, 
@@ -217,7 +217,7 @@ public class OdometryUtility {
         // Adjusts AprilTag position based on 0,0 based on alliance selection
         setOriginBasedOnAlliance();
         // Initialize Photon Pose Estimators
-        photonPoseEstimator_FrontLeft = new PhotonPoseEstimator(tagLayout, PoseStrategy.MULTI_TAG_PNP, m_leftCamera.getPhotonCamera(), robotToLeftCam);
+        // photonPoseEstimator_FrontLeft = new PhotonPoseEstimator(tagLayout, PoseStrategy.MULTI_TAG_PNP, m_leftCamera.getPhotonCamera(), robotToLeftCam);
         //photonPoseEstimator_FrontLeft.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
         //photonPoseEstimator_FrontRight = new PhotonPoseEstimator(tagLayout, PoseStrategy.MULTI_TAG_PNP, m_rightCamera.getPhotonCamera(), robotToRightCam);
         //photonPoseEstimator_FrontRight.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
@@ -274,17 +274,6 @@ public class OdometryUtility {
     // public PhotonCamera getBackCamera() { 
     //     return m_backCamera.getPhotonCamera();
     // }
-
-    /**
-     * <h3>getLeftCamera</h3>
-     * 
-     * Returns the PhotonCamera representing the left camera
-     * 
-     * @return a reference to the left camera
-     */
-    public PhotonCamera getLeftCamera() { 
-        return m_leftCamera.getPhotonCamera();
-    }
 
     /**
      * <h3>getRightCamera</h3>

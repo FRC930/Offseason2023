@@ -14,12 +14,12 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.AutoCommandManager;
 import frc.robot.autos.AutoCommandManager.subNames;
-import frc.robot.commands.AutoBalanceCommand;
 import frc.robot.commands.SwerveLockCommand;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.simulation.FieldSim;
@@ -29,11 +29,12 @@ import frc.robot.subsystems.arm.ArmIORobot;
 import frc.robot.subsystems.arm.ArmIOSim;
 import frc.robot.subsystems.arm.ArmSubsystem;
 import frc.robot.subsystems.manipulator.ManipulatorIORobot;
-import frc.robot.subsystems.manipulator.ManipulatorIOSim;
 import frc.robot.subsystems.manipulator.ManipulatorSubsystem;
+import frc.robot.utilities.CommandFactoryUtility;
 import frc.robot.utilities.RobotInformation;
 // import frc.robot.utilities.TimeOfFlightUtility;
 import frc.robot.utilities.RobotInformation.WhichRobot;
+import frc.robot.utilities.TargetScorePositionUtility.Target;
 import frc.robot.utilities.SwerveModuleConstants;
 import frc.robot.utilities.TargetScorePositionUtility;
 
@@ -88,15 +89,18 @@ public class RobotContainer {
   private final ManipulatorSubsystem m_manipulatorSubsystem = new ManipulatorSubsystem(new ManipulatorIORobot(6, 7));
   private final MechanismSimulator m_mechanismSimulator = new MechanismSimulator(m_armSubsystem, /*m_PitchIntakeSubsystem,*/ m_robotDrive);
 
-
   // Utilities \\
   // private final TimeOfFlightUtility m_timeOfFlight = new TimeOfFlightUtility(1);
+  private TargetScorePositionUtility m_targetScorePositionUtility = new TargetScorePositionUtility();
   
   // Commands \\
-  
   //private final RotateCommand m_rotateCommand = new RotateCommand(new Pose2d( 8.2423, 4.0513, new Rotation2d(0.0)), m_robotDrive);
-  private final AutoBalanceCommand m_autoBalanceCommand = new AutoBalanceCommand(m_robotDrive);
   private final SwerveLockCommand m_SwerveLockCommand = new SwerveLockCommand(m_robotDrive, true);
+  private Command m_groundIntakeCommand = CommandFactoryUtility.createIntakeCommand(m_armSubsystem, m_manipulatorSubsystem);
+  private Command m_stowArmCommand = CommandFactoryUtility.createStowArmCommand(m_armSubsystem, m_manipulatorSubsystem);
+  private Command m_createScoreLowCommand = CommandFactoryUtility.createScoreLowCommand(m_armSubsystem, m_manipulatorSubsystem);
+  private Command m_createScoreMediumCommand = CommandFactoryUtility.createScoreMediumCommand(m_armSubsystem, m_manipulatorSubsystem);
+  private Command m_createScoreHighCommand = CommandFactoryUtility.createScoreHighCommand(m_armSubsystem, m_manipulatorSubsystem);
 
   private final TeleopSwerve m_TeleopSwerve = new TeleopSwerve(m_robotDrive, m_driverController, translationAxis, strafeAxis, rotationAxis, true, true);
     
@@ -158,18 +162,33 @@ public class RobotContainer {
 
     // Slow drive
     m_driverController.leftStick().onTrue(new InstantCommand(() -> m_TeleopSwerve.toggleSpeed()));
-    
-    //Auto balance
-    // m_driverController.start().whileTrue(m_autoBalanceCommand);
   
     //Lock wheels in an X position
-    // m_driverController.a().toggleOnTrue(m_SwerveLockCommand);
+    m_driverController.a().toggleOnTrue(m_SwerveLockCommand);
 
     //--CODRIVER CONTROLLER--//
-    //TODO
-    //ground intake
-    //m_codriverController.leftTrigger().whileTrue()
-    //eject from stow position to score hybrid nodes
+    //Ground Intake
+    m_driverController.leftTrigger().onTrue(m_groundIntakeCommand).onFalse(m_stowArmCommand);
+
+    //Scoring
+    m_driverController.y()
+    .onTrue(
+      new ConditionalCommand(m_createScoreHighCommand, 
+        new ConditionalCommand(
+          m_createScoreMediumCommand, 
+          m_createScoreLowCommand, 
+          m_targetScorePositionUtility::isMedium), 
+        m_targetScorePositionUtility::isHigh)
+    )
+    .and(m_driverController.leftTrigger().negate())
+    .onFalse(m_stowArmCommand);
+
+     //Scoring Positions
+     m_driverController.povUp().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.high));
+     m_driverController.povLeft().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.medium));
+     m_driverController.povRight().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.medium));
+     m_driverController.povDown().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.low));
+   
   }
 
   /**

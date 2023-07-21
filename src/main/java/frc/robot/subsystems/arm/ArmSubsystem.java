@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
-import frc.robot.utilities.CommandFactoryUtility;
 
 public class ArmSubsystem extends SubsystemBase {
 
@@ -22,11 +21,6 @@ public class ArmSubsystem extends SubsystemBase {
     private final ArmIO m_armIO;
 
     private double targetPosition;
-
-    //TODO use offsets for positions
-    public static double STOW_POSITION = 84.0; //TODO figure out this value
-
-    public static double ARM_LENGTH = 27.12; //TODO figure out this value
 
     /**
      * <h3>ArmSubsystem</h3>
@@ -48,8 +42,6 @@ public class ArmSubsystem extends SubsystemBase {
         ff = new ArmFeedforward(0, 1.0, 0);
         
         m_armIO = armIO;
-
-        targetPosition = STOW_POSITION;
     }
 
     /**

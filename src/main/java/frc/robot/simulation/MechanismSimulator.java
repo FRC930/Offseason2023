@@ -10,26 +10,19 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.arm.ArmSubsystem;
-import frc.robot.subsystems.rotateintake.PitchIntakeSubsystem;
 
 public class MechanismSimulator {
     private final Mechanism2d mech;
     private final MechanismRoot2d root;
     private final MechanismLigament2d m_arm;
-    private final MechanismLigament2d m_intake = null;
 
     private final ArmSubsystem arm;
-    private final PitchIntakeSubsystem intake = null;
 
     private final SwerveDrive swerve;
 
     private static double armYOffset = 0;
     private static double armZOffset = 0;
     private static double armXOffset = 0;
-
-    private static double manipulatorYOffset;
-    private static double manipulatorZOffset;
-    private static double manipulatorXOffset = 0;
 
     /**
      * Simulates the arm and elevator systems in simulation, in a 2d window.
@@ -41,9 +34,6 @@ public class MechanismSimulator {
         this.arm = arm;
         //this.intake = intake;
         this.swerve = swerve;
-
-        manipulatorYOffset = Math.cos(arm.getPosition()) * ArmSubsystem.ARM_LENGTH;
-        manipulatorZOffset = Math.sin(arm.getPosition()) * ArmSubsystem.ARM_LENGTH;
 
         mech = new Mechanism2d(Units.inchesToMeters(100), Units.inchesToMeters(100));
         root = mech.getRoot("arm", Units.inchesToMeters(7.35), Units.inchesToMeters(10));
