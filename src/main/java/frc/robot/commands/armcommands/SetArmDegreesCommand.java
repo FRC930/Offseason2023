@@ -46,10 +46,9 @@ public class SetArmDegreesCommand extends CommandBase{
      * @param armPosition The desired arm position in degrees
      * @param manipulatorPosition The desired manipulator position in degrees
      */
-    public SetArmDegreesCommand(ArmSubsystem armSubsystem, ManipulatorSubsystem manipulatorSubsystem, double armPosition, double manipulatorPosition) {
+    public SetArmDegreesCommand(ArmSubsystem armSubsystem, ManipulatorSubsystem manipulatorSubsystem, double armPosition) {
         m_arm = armSubsystem;
         m_manipulator = manipulatorSubsystem;
-        m_manipulatorPos = manipulatorPosition;
         m_armPos = armPosition;
         addRequirements(manipulatorSubsystem,armSubsystem);
     }
