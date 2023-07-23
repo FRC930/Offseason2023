@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.AutoCommandManager;
 import frc.robot.autos.AutoCommandManager.subNames;
+import frc.robot.commands.AutoBalanceCommand;
 import frc.robot.commands.SwerveLockCommand;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.simulation.FieldSim;
@@ -95,6 +96,7 @@ public class RobotContainer {
   
   // Commands \\
   //private final RotateCommand m_rotateCommand = new RotateCommand(new Pose2d( 8.2423, 4.0513, new Rotation2d(0.0)), m_robotDrive);
+  private final AutoBalanceCommand m_autoBalanceCommand = new AutoBalanceCommand(m_robotDrive);
   private final SwerveLockCommand m_SwerveLockCommand = new SwerveLockCommand(m_robotDrive, true);
   private Command m_groundIntakeCommand = CommandFactoryUtility.createIntakeCommand(m_armSubsystem, m_manipulatorSubsystem);
   private Command m_stowArmCommand = CommandFactoryUtility.createStowArmCommand(m_armSubsystem, m_manipulatorSubsystem);
@@ -109,9 +111,6 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // If not FMS controlled add to teleop init too (for practice match and Red/Blue alliance need to be correctly set)
-    checkDSUpdate();
-
     // Auto Commands
 
     //TODO remove
@@ -133,18 +132,6 @@ public class RobotContainer {
     // m_PitchIntakeSubsystem.setDefaultCommand(new PitchIntakeCommand(m_PitchIntakeSubsystem, 0));
     //stow arm position as default
   }
-
-  void checkDSUpdate() {
-    Alliance currentAlliance = DriverStation.getAlliance();
-
-    // If we have data, and have a new alliance from last time
-    if (DriverStation.isDSAttached() && currentAlliance != alliance) {
-      m_robotDrive.setOriginBasedOnAlliance();
-      alliance = currentAlliance;
-    }
-
-    Logger.getInstance().recordOutput(this.getClass().getSimpleName()+"/currentAlliance", currentAlliance.toString());
-  } 
   
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
@@ -198,29 +185,11 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // If not FMS controlled add to teleop init too (for practice match and Red/Blue alliance need to be correctly set)
-    checkDSUpdate();
-
     return m_autoManager.getAutonomousCommand();
     //TODO determine if autoManager needs to have andThen(() -> m_robotDrive.drive(0, 0, 0, false,false));
   }
 
-  /**
-   * Method to run before teleop starts, needed to help reset April Tag direction before teleop if operator does not do 
-   * autonomous first.
-   */
-  public void teleopInit() {
-    // If not FMS controlled add to teleop init too (for practice match and Red/Blue alliance need to be correctly set)
-    if(!DriverStation.isFMSAttached()) {
-      m_robotDrive.setOriginBasedOnAlliance();
-    }
-
-}
-  
-
   public void periodic() {
-    // If not FMS controlled add to teleop init too (for practice match and Red/Blue alliance need to be correctly set)
-    checkDSUpdate();
-
     m_fieldSim.periodic();
     m_mechanismSimulator.periodic();
 
