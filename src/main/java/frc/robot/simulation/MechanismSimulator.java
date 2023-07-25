@@ -81,6 +81,8 @@ public class MechanismSimulator {
         
         // Arm Position in Advantage Scope
         double[] armPosition = {
+            armXOffset + swerve.getPose().getX(),
+            armYOffset + swerve.getPose().getY(),
             1,
             0,
             arm.getPosition(),

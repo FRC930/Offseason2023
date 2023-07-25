@@ -48,9 +48,33 @@ public class PathPlannerCommand extends SequentialCommandGroup {
         List<PathPlannerTrajectory> loadPathGroup = PathPlanner.loadPathGroup(pathName, 
              false, pathConstraints);
 
+        SwerveAutoBuilder autoBuilder = 
+            new SwerveAutoBuilder(
+                s_Swerve::getPose, //Using Pose Swerve estimator
+                s_Swerve::resetOdometry, //pose2D consumer, used to reset odometry at beginning of zero
+                SwerveDrive.getSwerveKinematics(),
+                new PIDConstants(1.75, 0.0, 0.175), //PID constants to correct for translation error (X and Y)
+                //new PIDConstants(1.0, 0.0, 0.0), //PID constants to correct for rotation error (used to create the rotation controller)
+                new PIDConstants(1.9, 0.0, 0.19), //PID constants to correct for rotation error (used to create the rotation controller)
+                s_Swerve::setSwerveModuleStates,
+                eventCommandMap, 
+                true, // TODO Should the path be automatically mirrored depending on alliance color
+                s_Swerve);
+
         // Adding a pre command to autonomous ex. autoBalance
         if(preCommand != null) {
             addCommands(preCommand);
+        }
+
+        // creates a command based on the path group
+        Command swerveControllerCommand = autoBuilder.fullAuto(loadPathGroup);
+        addCommands(
+            // TODO: Use april tags to help set this
+            new InstantCommand(() -> FieldCentricOffset.getInstance().setOffset(loadPathGroup.get(0).getInitialHolonomicPose().getRotation().getDegrees())),
+            swerveControllerCommand
+        );
+        if (postCommand != null) {
+            addCommands(postCommand);
         }
     }
 

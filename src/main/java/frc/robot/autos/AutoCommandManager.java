@@ -13,10 +13,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.AutoBalanceCommand;
 import frc.robot.commands.PPSwerveControllerCommand;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.arm.ArmSubsystem;
 import frc.robot.subsystems.manipulator.ManipulatorSubsystem;
+import frc.robot.utilities.CommandFactoryUtility;
 
 /**
  * <h3>AutonomouseCommandManager</h3>
@@ -110,11 +113,11 @@ public class AutoCommandManager {
         ManipulatorSubsystem m_manipulatorSubsystem = (ManipulatorSubsystem) subsystemMap.get(subNames.ManipulatorSubsystem.toString());
         
         // //Autonomous Commands
-        // Command ScoreHighEngageCommand = new PathPlannerCommand(
-        //     CommandFactoryUtility.createAutoScoreHighCommand(m_elevatorSubsystem, m_armSubsystem, m_manipulatorSubsystem)
-        //         .andThen(new WaitCommand(1.0)), 
-        //     s_SwerveDrive, "OneScoreHighEngage_o", eventCommandMap, 
-        //     new AutoBalanceCommand(s_SwerveDrive, true));
+        Command ScoreHighEngageCommand = new PathPlannerCommand(
+            CommandFactoryUtility.createScoreLowCommand(m_armSubsystem, m_manipulatorSubsystem)
+                .andThen(new WaitCommand(1.0)), 
+            s_SwerveDrive, "OneScoreHighEngage_o", eventCommandMap, 
+            new AutoBalanceCommand(s_SwerveDrive, true));
 
         // Command OneScoreBumpCommand = new PathPlannerCommand(
         //     CommandFactoryUtility.createAutoScoreHighCommand(m_elevatorSubsystem, m_armSubsystem, m_manipulatorSubsystem)
@@ -160,7 +163,7 @@ public class AutoCommandManager {
         m_chooser.setDefaultOption("None", null);
 
         // m_chooser.addOption("ScoreHighCone", ScoreHighConeCommand);
-        // m_chooser.addOption("ScoreHighEngage", ScoreHighEngageCommand);
+        m_chooser.addOption("ScoreHighEngage", ScoreHighEngageCommand);
         // m_chooser.addOption("OneScoreBump_o", OneScoreBumpCommand);
         // // m_chooser.addOption("NoBumpConeSConeSCubeS", NoBumpConeSConeSCubeS);
         // m_chooser.addOption("ThreeScoreMid_ouu", NoBumpMConeSMCubeSCubeSV3);

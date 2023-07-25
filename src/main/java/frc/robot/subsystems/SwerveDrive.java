@@ -92,6 +92,10 @@ public class SwerveDrive extends SubsystemBase {
         
   }
 
+  public Pose2d getPose() {
+    return m_odometry.getPoseMeters();
+  }
+
   public void drive(
       double throttle,
       double strafe,

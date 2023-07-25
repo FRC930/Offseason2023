@@ -111,6 +111,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    checkDSUpdate();
     // Auto Commands
 
     //TODO remove
@@ -178,18 +179,45 @@ public class RobotContainer {
    
   }
 
+  void checkDSUpdate() {
+    Alliance currentAlliance = DriverStation.getAlliance();
+
+    // If we have data, and have a new alliance from last time
+    if (DriverStation.isDSAttached() && currentAlliance != alliance) {
+      // m_robotDrive.setOriginBasedOnAlliance(); no longer used because of April Tags
+      alliance = currentAlliance;
+    }
+
+    Logger.getInstance().recordOutput(this.getClass().getSimpleName()+"/currentAlliance", currentAlliance.toString());
+  } 
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    checkDSUpdate();
     // If not FMS controlled add to teleop init too (for practice match and Red/Blue alliance need to be correctly set)
     return m_autoManager.getAutonomousCommand();
     //TODO determine if autoManager needs to have andThen(() -> m_robotDrive.drive(0, 0, 0, false,false));
   }
 
+  /**
+   * Method to run before teleop starts, needed to help reset April Tag direction before teleop if operator does not do 
+   * autonomous first.
+   */
+  public void teleopInit() {
+    // If not FMS controlled add to teleop init too (for practice match and Red/Blue alliance need to be correctly set)
+    if(!DriverStation.isFMSAttached()) {
+      // m_robotDrive.setOriginBasedOnAlliance(); No longer using since April Tags are no longer being used
+    }
+
+}
+
   public void periodic() {
+    checkDSUpdate();
+
     m_fieldSim.periodic();
     m_mechanismSimulator.periodic();
 
