@@ -20,7 +20,7 @@ public class ArmIORobot implements ArmIO {
     private static double m_armOffsetDegrees = Preferences.getDouble(PREFERENCE_NAME, -12.0);
 
     // 6.3 encoder value is 0
-    private static double m_armOffset = 0.0; //TODO set first time turned on
+    private static double m_armOffset = 274.0; //TODO set first time turned on
     
 
     public ArmIORobot(int leaderArmMotorID, int followerArmMotorID) {
@@ -44,7 +44,7 @@ public class ArmIORobot implements ArmIO {
         m_leaderArmEncoder.setPositionConversionFactor(360);
         m_leaderArmEncoder.setVelocityConversionFactor(60);
 
-        m_leaderArmEncoder.setInverted(true);
+        m_leaderArmEncoder.setInverted(false);
 
         m_leaderArmEncoder.setZeroOffset((m_armOffset+m_armOffsetDegrees)%360);
 

@@ -8,16 +8,18 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.armcommands.RunManipulatorRollerCommand;
+import frc.robot.commands.armcommands.RunTopRollerCommand;
 import frc.robot.commands.armcommands.SetArmDegreesCommand;
 import frc.robot.subsystems.arm.ArmSubsystem;
 import frc.robot.subsystems.manipulator.ManipulatorSubsystem;
+import frc.robot.subsystems.TopRollerSubsystem;
 
 public class CommandFactoryUtility {
     //Cube Ground Intake
     public static final double ARM_INTAKE_ANGLE = 235; //TODO find values
 
     //Stow Position
-    public static double STOW_POSITION = 70.0; //TODO find values
+    public static double STOW_POSITION = 45.0;//70.0; //TODO find values
 
     //Low Score
     public static final double ARM_LOW_SCORE_ANGLE = STOW_POSITION; //STOW_POSITION;
@@ -34,18 +36,22 @@ public class CommandFactoryUtility {
 
     public static Command createIntakeCommand(
         ArmSubsystem m_armSubsystem,
-        ManipulatorSubsystem m_manipulatorSubsystem) {
+        ManipulatorSubsystem m_manipulatorSubsystem,
+        TopRollerSubsystem m_topRollerSubsystem) {
         final Command command = 
             new SetArmDegreesCommand(m_armSubsystem, ARM_INTAKE_ANGLE)
-                .andThen(new RunManipulatorRollerCommand(m_manipulatorSubsystem, ManipulatorSubsystem.ROLLER_INTAKE_SPEED));
+                .andThen(new RunManipulatorRollerCommand(m_manipulatorSubsystem, ManipulatorSubsystem.ROLLER_INTAKE_SPEED))
+                .andThen(new RunTopRollerCommand(m_topRollerSubsystem, TopRollerSubsystem.ROLLER_INTAKE_SPEED));
         return command;
     }
 
     public static Command createStowArmCommand(
         ArmSubsystem m_armSubsystem,
-        ManipulatorSubsystem m_manipulatorSubsystem) {
+        ManipulatorSubsystem m_manipulatorSubsystem,
+        TopRollerSubsystem m_topRollerSubsystem) {
         final Command command = 
             new RunManipulatorRollerCommand(m_manipulatorSubsystem, ManipulatorSubsystem.HOLD_SPEED)
+            .andThen(new RunTopRollerCommand(m_topRollerSubsystem, 0.0))
             .andThen(new SetArmDegreesCommand(m_armSubsystem, STOW_POSITION))
             .andThen(m_armSubsystem.createWaitUntilLessThanAngleCommand(170.0))    
             .andThen(m_armSubsystem.createWaitUntilGreaterThanAngleCommand(45.0));

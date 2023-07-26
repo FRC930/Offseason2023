@@ -65,6 +65,6 @@ public class ManipulatorSubsystem extends SubsystemBase {
      */
     public void setRollerSpeed(double speed) {
         m_io.setRollerSpeed(speed);
-        Logger.getInstance().recordOutput("RunManipulatorRollerCommand/ManipulatorSpeed", speed);
+        Logger.getInstance().recordOutput(this.getClass().getSimpleName() + "/ManipulatorSpeed", speed);
     }
 }
