@@ -25,10 +25,10 @@ public class CommandFactoryUtility {
     public static final double ARM_LOW_SCORE_ANGLE = STOW_POSITION; //STOW_POSITION;
     
     //Medium Score
-    public static final double ARM_MEDIUM_SCORE_ANGLE = 90; //STOW_POSITION;
+    public static final double ARM_MEDIUM_SCORE_ANGLE = 125.0;
 
     //High Score
-    public static final double ARM_HIGH_SCORE_ANGLE = 90; //STOW_POSITION;
+    public static final double ARM_HIGH_SCORE_ANGLE = 115.0;
 
 
 
@@ -78,21 +78,21 @@ public class CommandFactoryUtility {
         ArmSubsystem m_armSubsystem,
         ManipulatorSubsystem m_manipulatorSubsystem) {
 
-        return createScoreCommand(m_armSubsystem, m_manipulatorSubsystem, STOW_POSITION, ManipulatorSubsystem.LOW_SCORE_SPEED, 0.5);
+        return createScoreCommand(m_armSubsystem, m_manipulatorSubsystem, ARM_LOW_SCORE_ANGLE, ManipulatorSubsystem.LOW_SCORE_SPEED, 0.5);
     }
 
     public static Command createScoreMediumCommand(
         ArmSubsystem m_armSubsystem,
         ManipulatorSubsystem m_manipulatorSubsystem) {
 
-        return createScoreCommand(m_armSubsystem, m_manipulatorSubsystem, STOW_POSITION, ManipulatorSubsystem.MEDIUM_SCORE_SPEED, 0.5);
+        return createScoreCommand(m_armSubsystem, m_manipulatorSubsystem, ARM_MEDIUM_SCORE_ANGLE, ManipulatorSubsystem.MEDIUM_SCORE_SPEED, 0.5);
     }
 
     public static Command createScoreHighCommand(
         ArmSubsystem m_armSubsystem,
         ManipulatorSubsystem m_manipulatorSubsystem) {
 
-        return createScoreCommand(m_armSubsystem, m_manipulatorSubsystem, STOW_POSITION, ManipulatorSubsystem.HIGH_SCORE_SPEED, 0.5);
+        return createScoreCommand(m_armSubsystem, m_manipulatorSubsystem, ARM_HIGH_SCORE_ANGLE, ManipulatorSubsystem.HIGH_SCORE_SPEED, 0.5);
     }
 
     /**
