@@ -44,7 +44,7 @@ public class ManipulatorIORobot implements ManipulatorIO {
         // TODO: Was too low when tested
         //roller.setSmartCurrentLimit(STALL_LIMIT, FREE_LIMIT);
 
-        leaderRoller.setInverted(false);
+        leaderRoller.setInverted(true);
     }
      /**
      * <h3>updateInputs</h3>

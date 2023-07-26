@@ -16,10 +16,10 @@ import frc.robot.subsystems.TopRollerSubsystem;
 
 public class CommandFactoryUtility {
     //Cube Ground Intake
-    public static final double ARM_INTAKE_ANGLE = 235; //TODO find values
+    public static final double ARM_INTAKE_ANGLE = 2.0; //TODO find values
 
     //Stow Position
-    public static double STOW_POSITION = 45.0;//70.0; //TODO find values
+    public static double STOW_POSITION = 135.0;
 
     //Low Score
     public static final double ARM_LOW_SCORE_ANGLE = STOW_POSITION; //STOW_POSITION;
@@ -40,8 +40,9 @@ public class CommandFactoryUtility {
         TopRollerSubsystem m_topRollerSubsystem) {
         final Command command = 
             new SetArmDegreesCommand(m_armSubsystem, ARM_INTAKE_ANGLE)
-                .andThen(new RunManipulatorRollerCommand(m_manipulatorSubsystem, ManipulatorSubsystem.ROLLER_INTAKE_SPEED))
-                .andThen(new RunTopRollerCommand(m_topRollerSubsystem, TopRollerSubsystem.ROLLER_INTAKE_SPEED));
+                .andThen(new RunTopRollerCommand(m_topRollerSubsystem, TopRollerSubsystem.ROLLER_INTAKE_SPEED))
+
+                .andThen(new RunManipulatorRollerCommand(m_manipulatorSubsystem, ManipulatorSubsystem.ROLLER_INTAKE_SPEED));
         return command;
     }
 
@@ -77,21 +78,21 @@ public class CommandFactoryUtility {
         ArmSubsystem m_armSubsystem,
         ManipulatorSubsystem m_manipulatorSubsystem) {
 
-        return createScoreCommand(m_armSubsystem, m_manipulatorSubsystem, ARM_LOW_SCORE_ANGLE, ManipulatorSubsystem.LOW_SCORE_SPEED, 0.5);
+        return createScoreCommand(m_armSubsystem, m_manipulatorSubsystem, STOW_POSITION, ManipulatorSubsystem.LOW_SCORE_SPEED, 0.5);
     }
 
     public static Command createScoreMediumCommand(
         ArmSubsystem m_armSubsystem,
         ManipulatorSubsystem m_manipulatorSubsystem) {
 
-        return createScoreCommand(m_armSubsystem, m_manipulatorSubsystem, ARM_MEDIUM_SCORE_ANGLE, ManipulatorSubsystem.MEDIUM_SCORE_SPEED, 0.5);
+        return createScoreCommand(m_armSubsystem, m_manipulatorSubsystem, STOW_POSITION, ManipulatorSubsystem.MEDIUM_SCORE_SPEED, 0.5);
     }
 
     public static Command createScoreHighCommand(
         ArmSubsystem m_armSubsystem,
         ManipulatorSubsystem m_manipulatorSubsystem) {
 
-        return createScoreCommand(m_armSubsystem, m_manipulatorSubsystem, ARM_HIGH_SCORE_ANGLE, ManipulatorSubsystem.HIGH_SCORE_SPEED, 0.5);
+        return createScoreCommand(m_armSubsystem, m_manipulatorSubsystem, STOW_POSITION, ManipulatorSubsystem.HIGH_SCORE_SPEED, 0.5);
     }
 
     /**

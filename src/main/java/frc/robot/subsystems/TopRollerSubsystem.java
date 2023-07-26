@@ -14,7 +14,7 @@ public class TopRollerSubsystem extends SubsystemBase{
 
     private final CANSparkMax topRoller;
 
-    public static final double ROLLER_INTAKE_SPEED = 0.1;
+    public static final double ROLLER_INTAKE_SPEED = 0.2;
 
     public TopRollerSubsystem(int topRollerID) {
         topRoller = new SparkMaxWrapper(topRollerID, MotorType.kBrushless);
