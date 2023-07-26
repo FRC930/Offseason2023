@@ -147,8 +147,10 @@ public class RobotContainer {
 
     SmartDashboard.putBoolean(this.getClass().getSimpleName()+"/DriverController", DriverStation.getJoystickIsXbox(0));
     SmartDashboard.putBoolean(this.getClass().getSimpleName()+"/Co-DriverController", DriverStation.getJoystickIsXbox(1));
+    
     //Final Button Bindings
     //--DRIVER CONTROLLER--//
+    //--CODRIVER CONTROLLER--//
 
     // Slow drive
     m_driverController.leftStick().onTrue(new InstantCommand(() -> m_TeleopSwerve.toggleSpeed()));
@@ -156,9 +158,10 @@ public class RobotContainer {
     //Lock wheels in an X position
     m_driverController.a().toggleOnTrue(m_SwerveLockCommand);
 
-    //--CODRIVER CONTROLLER--//
     //Ground Intake
-    m_driverController.leftTrigger().onTrue(m_groundIntakeCommand).onFalse(m_stowArmCommand);
+    m_driverController.leftTrigger()
+      .onTrue(m_groundIntakeCommand)
+      .onFalse(m_stowArmCommand);
 
     //Scoring
     m_driverController.y()
@@ -173,11 +176,15 @@ public class RobotContainer {
     .and(m_driverController.leftTrigger().negate())
     .onFalse(m_stowArmCommand);
 
-     //Scoring Positions
-     m_driverController.povUp().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.high));
-     m_driverController.povLeft().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.medium));
-     m_driverController.povRight().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.medium));
-     m_driverController.povDown().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.low));
+    //Scoring Positions
+    m_driverController.povUp().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.high));
+    m_driverController.povLeft().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.medium));
+    m_driverController.povRight().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.medium));
+    m_driverController.povDown().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.low));
+
+    m_driverController.rightTrigger()
+      .onTrue(CommandFactoryUtility.maxSpeedCommand(m_manipulatorSubsystem))
+      .onFalse(CommandFactoryUtility.holdSpeedCommand(m_manipulatorSubsystem));
    
   }
 

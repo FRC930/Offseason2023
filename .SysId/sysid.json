@@ -2,9 +2,9 @@
   "SysId": {
     "Analysis Type": "Drivetrain",
     "NetworkTables Settings": {
-      "serverTeam": "9930"
+      "serverTeam": "9990"
     },
     "mode": "Client (NT4)",
-    "serverTeam": "10.99.30.2"
+    "serverTeam": "10.99.90.2"
   }
 }

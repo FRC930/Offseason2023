@@ -19,12 +19,14 @@ import frc.robot.Robot;
 public class ManipulatorSubsystem extends SubsystemBase {
         private final ManipulatorIO m_io;
 
-    public static final double ROLLER_INTAKE_SPEED = 0.15; 
-    public static final double HOLD_SPEED = 0.1; 
+    public static final double ROLLER_INTAKE_SPEED = 0.25; 
+    public static final double HOLD_SPEED = 0.05; 
 
     public static final double LOW_SCORE_SPEED = -0.1; 
     public static final double MEDIUM_SCORE_SPEED = -0.2; 
     public static final double HIGH_SCORE_SPEED = -0.7; 
+
+    public static final double MAX_SPEED = -1.0;
 
     /**<h3>ManipulatorSubsystem</h3>
      * Decides desired output, in volts, for the manipulator.

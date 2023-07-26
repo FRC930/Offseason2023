@@ -95,6 +95,20 @@ public class CommandFactoryUtility {
         return createScoreCommand(m_armSubsystem, m_manipulatorSubsystem, ARM_HIGH_SCORE_ANGLE, ManipulatorSubsystem.HIGH_SCORE_SPEED, 0.5);
     }
 
+    public static Command maxSpeedCommand(ManipulatorSubsystem m_manipulatorSubsystem) {
+        Command command;
+
+        command = new RunManipulatorRollerCommand(m_manipulatorSubsystem, ManipulatorSubsystem.MAX_SPEED);
+        return command;
+    }
+
+    public static Command holdSpeedCommand(ManipulatorSubsystem m_ManipulatorSubsystem) {
+        Command command;
+
+        command = new RunManipulatorRollerCommand(m_ManipulatorSubsystem, ManipulatorSubsystem.HOLD_SPEED);
+        return command;
+    }
+
     /**
      * addAutoCommandEvent
      *  Add event command to event map for autonomous paths
