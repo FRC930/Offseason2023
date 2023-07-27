@@ -75,7 +75,7 @@ public class MechanismSimulator {
      * Constantly updates current simulation angle to the display and update the positions for Advantage Scope
      */
     public void periodic(){
-        m_arm.setAngle(arm.getPosition()-45);
+        m_arm.setAngle(arm.getPosition());
         //m_intake.setAngle(intake.getEncoderPosition());
 
         

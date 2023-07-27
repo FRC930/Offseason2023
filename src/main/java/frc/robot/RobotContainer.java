@@ -114,15 +114,20 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     checkDSUpdate();
-    // Auto Commands
 
-    //TODO remove
-    // eventCommandMap = eventCommandMap = new HashMap<>();
+    // Auto Commands
+    CommandFactoryUtility.addAutoCommandEvent(eventCommandMap, "intakeCube", 
+        m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem);
+    CommandFactoryUtility.addAutoCommandEvent(eventCommandMap, "stowArm", 
+        m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem);
+
+    // eventCommandMap = new HashMap<>();
 
     m_autoManager = new AutoCommandManager();
     m_autoManager.addSubsystem(subNames.SwerveDriveSubsystem, m_robotDrive);
     m_autoManager.addSubsystem(subNames.ArmSubsystem, m_armSubsystem);
     m_autoManager.addSubsystem(subNames.ManipulatorSubsystem, m_manipulatorSubsystem);
+    m_autoManager.addSubsystem(subNames.TopRollerSubsystem, m_topRollerSubsystem);
     m_autoManager.initCommands(eventCommandMap);
 
     // Configure the button bindings

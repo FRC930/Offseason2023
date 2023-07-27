@@ -2,7 +2,6 @@ package frc.robot.commands.armcommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.arm.ArmSubsystem;
-import frc.robot.subsystems.manipulator.ManipulatorSubsystem;
 
 public class SetArmDegreesCommand extends CommandBase{
 

@@ -16,7 +16,7 @@ import frc.robot.subsystems.TopRollerSubsystem;
 
 public class CommandFactoryUtility {
     //Cube Ground Intake
-    public static final double ARM_INTAKE_ANGLE = 2.0; //TODO find values
+    public static final double ARM_INTAKE_ANGLE = 5.0;
 
     //Stow Position
     public static double STOW_POSITION = 135.0;
@@ -115,16 +115,23 @@ public class CommandFactoryUtility {
      * 
      * @param eventCommandMap
      * @param eventName
-     * @param m_elevatorSubsystem
      * @param m_armSubsystem
      * @param m_manipulatorSubsystem
      */
     public static void addAutoCommandEvent( Map<String, Command> eventCommandMap, 
                                             String eventName, 
                                             ArmSubsystem m_armSubsystem, 
-                                            ManipulatorSubsystem m_manipulatorSubsystem) {
+                                            ManipulatorSubsystem m_manipulatorSubsystem,
+                                            TopRollerSubsystem m_topRollerSubsystem) {
         Command autoCommand = null;
         switch(eventName) {
+            case "intakeCube":
+                autoCommand = CommandFactoryUtility.createIntakeCommand(m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem)
+                    .andThen(new WaitCommand(1.0));
+                break;
+            case "stowArm":
+                autoCommand = CommandFactoryUtility.createStowArmCommand(m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem);
+                break;
         }
 
         if(autoCommand != null) {
