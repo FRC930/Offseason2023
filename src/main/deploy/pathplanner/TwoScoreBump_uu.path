@@ -76,16 +76,16 @@
     },
     {
       "anchorPoint": {
-        "x": 7.562268115989223,
-        "y": 0.9477909554109699
+        "x": 7.229629865821786,
+        "y": 0.9377075530185282
       },
       "prevControl": {
-        "x": 5.3812070017302425,
-        "y": 0.9021142828610453
+        "x": 5.048568751562805,
+        "y": 0.8920308804686036
       },
       "nextControl": {
-        "x": 5.3812070017302425,
-        "y": 0.9021142828610453
+        "x": 5.048568751562805,
+        "y": 0.8920308804686036
       },
       "holonomicAngle": 0,
       "isReversal": true,
@@ -117,7 +117,9 @@
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [],
+        "names": [
+          "shootCube"
+        ],
         "executionBehavior": "parallel",
         "waitBehavior": "none",
         "waitTime": 0

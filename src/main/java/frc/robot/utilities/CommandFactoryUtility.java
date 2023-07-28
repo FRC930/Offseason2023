@@ -95,14 +95,14 @@ public class CommandFactoryUtility {
         return createScoreCommand(m_armSubsystem, m_manipulatorSubsystem, ARM_HIGH_SCORE_ANGLE, ManipulatorSubsystem.HIGH_SCORE_SPEED, 0.5);
     }
 
-    public static Command maxSpeedCommand(ManipulatorSubsystem m_manipulatorSubsystem) {
+    public static Command createMaxSpeedCommand(ManipulatorSubsystem m_manipulatorSubsystem) {
         Command command;
 
         command = new RunManipulatorRollerCommand(m_manipulatorSubsystem, ManipulatorSubsystem.MAX_SPEED);
         return command;
     }
 
-    public static Command holdSpeedCommand(ManipulatorSubsystem m_ManipulatorSubsystem) {
+    public static Command createHoldSpeedCommand(ManipulatorSubsystem m_ManipulatorSubsystem) {
         Command command;
 
         command = new RunManipulatorRollerCommand(m_ManipulatorSubsystem, ManipulatorSubsystem.HOLD_SPEED);
@@ -131,6 +131,11 @@ public class CommandFactoryUtility {
                 break;
             case "stowArm":
                 autoCommand = CommandFactoryUtility.createStowArmCommand(m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem);
+                break;
+            case "shootCube":
+                autoCommand = CommandFactoryUtility.createMaxSpeedCommand(m_manipulatorSubsystem)
+                .andThen(new WaitCommand(1.0))
+                .andThen(CommandFactoryUtility.createHoldSpeedCommand(m_manipulatorSubsystem));
                 break;
         }
 

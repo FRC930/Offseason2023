@@ -120,6 +120,8 @@ public class RobotContainer {
         m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem);
     CommandFactoryUtility.addAutoCommandEvent(eventCommandMap, "stowArm", 
         m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem);
+    CommandFactoryUtility.addAutoCommandEvent(eventCommandMap, "shootCube", 
+        m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem);
 
     // eventCommandMap = new HashMap<>();
 
@@ -188,8 +190,8 @@ public class RobotContainer {
     m_codriverController.povDown().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.low));
 
     m_driverController.rightTrigger()
-      .onTrue(CommandFactoryUtility.maxSpeedCommand(m_manipulatorSubsystem))
-      .onFalse(CommandFactoryUtility.holdSpeedCommand(m_manipulatorSubsystem));
+      .onTrue(CommandFactoryUtility.createMaxSpeedCommand(m_manipulatorSubsystem))
+      .onFalse(CommandFactoryUtility.createHoldSpeedCommand(m_manipulatorSubsystem));
    
   }
 
