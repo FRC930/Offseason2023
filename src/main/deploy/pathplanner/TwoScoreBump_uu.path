@@ -117,9 +117,7 @@
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [
-          "shootCube"
-        ],
+        "names": [],
         "executionBehavior": "parallel",
         "waitBehavior": "none",
         "waitTime": 0
@@ -129,5 +127,12 @@
   "maxVelocity": 2.0,
   "maxAcceleration": 2.0,
   "isReversed": null,
-  "markers": []
+  "markers": [
+    {
+      "position": 3.578181818181669,
+      "names": [
+        "shootCube"
+      ]
+    }
+  ]
 }
