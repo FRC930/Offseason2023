@@ -28,7 +28,7 @@ public class CommandFactoryUtility {
     public static final double ARM_MEDIUM_SCORE_ANGLE = 125.0;
 
     //High Score
-    public static final double ARM_HIGH_SCORE_ANGLE = 125.0;
+    public static final double ARM_HIGH_SCORE_ANGLE = 120.0;
 
 
 
