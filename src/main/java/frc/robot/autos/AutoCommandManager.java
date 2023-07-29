@@ -130,6 +130,13 @@ public class AutoCommandManager {
             s_SwerveDrive, "TwoScoreBump_uu", eventCommandMap
         );
 
+        Command TwoScoreAndPickupBumpCommand = new PathPlannerCommand(
+            CommandFactoryUtility.createScoreHighCommand(m_armSubsystem, m_manipulatorSubsystem)
+            .andThen(new WaitCommand(1.0))
+            .andThen(CommandFactoryUtility.createStowArmCommand(m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem)),
+            s_SwerveDrive, "TwoScoreAndPickupBump_uuu", eventCommandMap
+        );
+
 
         // Adding options to the chooser in Shuffleboard/smartdashboard
         Boolean isBlue = (DriverStation.getAlliance() == Alliance.Blue);
@@ -137,6 +144,7 @@ public class AutoCommandManager {
 
         m_chooser.addOption("HighScoreBumpMobility_u", HighScoreBumpMobilityCommand);
         m_chooser.addOption("TwoScoreBump_uu", TwoScoreBumpCommand);
+        m_chooser.addOption("TwoScoreAndPickupBump_uuu", TwoScoreAndPickupBumpCommand);
 
         //Adding chooser to Shuffleboard/Smartdashboard
         SmartDashboard.putData("Auto choices", m_chooser);
