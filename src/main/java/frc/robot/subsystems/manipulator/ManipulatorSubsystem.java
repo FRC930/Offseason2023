@@ -69,4 +69,9 @@ public class ManipulatorSubsystem extends SubsystemBase {
         m_io.setRollerSpeed(speed);
         Logger.getInstance().recordOutput(this.getClass().getSimpleName() + "/ManipulatorSpeed", speed);
     }
+
+    public Command waitUntilCurrentPast(double amps) { 
+        Debouncer debouncer = new Debouncer(.02); //Creates a debouncer to confirm amps are greater than value for .1 seconds
+        return Commands.waitUntil(() -> debouncer.calculate(this.getRollerCurrent() > amps));
+    }
 }
