@@ -18,7 +18,7 @@ import frc.robot.subsystems.TopRollerSubsystem;
 
 public class CommandFactoryUtility {
     //Cube Ground Intake
-    public static final double ARM_INTAKE_ANGLE = 5.0;
+    public static final double ARM_INTAKE_ANGLE = -5.0;
 
     //Stow Position
     public static double STOW_POSITION = 135.0;
