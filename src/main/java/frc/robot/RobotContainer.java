@@ -85,6 +85,8 @@ public class RobotContainer {
   // Subsystems \\
   private final SwerveDrive m_robotDrive = new SwerveDrive(frontLeftModule, frontRightModule, backLeftModule, backRightModule);
   private final FieldSim m_fieldSim = new FieldSim(m_robotDrive);
+  private final TeleopSwerve m_TeleopSwerve = new TeleopSwerve(m_robotDrive, m_driverController, translationAxis, strafeAxis, rotationAxis, true, true);
+
   //private final PitchIntakeSubsystem m_PitchIntakeSubsystem = new PitchIntakeSubsystem(Robot.isReal()? new PitchIntakeIORobot(14): new PitchIntakeIOSim());
   
   private final ArmSubsystem m_armSubsystem = new ArmSubsystem(Robot.isReal() ? new ArmIORobot(2, 4) : new ArmIOSim());
@@ -101,12 +103,13 @@ public class RobotContainer {
   private final AutoBalanceCommand m_autoBalanceCommand = new AutoBalanceCommand(m_robotDrive);
   private final SwerveLockCommand m_SwerveLockCommand = new SwerveLockCommand(m_robotDrive, true);
   private Command m_groundIntakeCommand = CommandFactoryUtility.createIntakeCommand(m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem);
+  private Command m_groundIntakeAndSlowDownCommand = CommandFactoryUtility.createIntakeAndSlowDownCommand(m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem, m_TeleopSwerve);
   private Command m_stowArmCommand = CommandFactoryUtility.createStowArmCommand(m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem);
+  private Command m_stowArmAndSpeedUpCommand = CommandFactoryUtility.createStowArmAndSpeedUpCommand(m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem, m_TeleopSwerve);
   private Command m_createScoreLowCommand = CommandFactoryUtility.createScoreLowCommand(m_armSubsystem, m_manipulatorSubsystem);
   private Command m_createScoreMediumCommand = CommandFactoryUtility.createScoreMediumCommand(m_armSubsystem, m_manipulatorSubsystem);
   private Command m_createScoreHighCommand = CommandFactoryUtility.createScoreHighCommand(m_armSubsystem, m_manipulatorSubsystem);
 
-  private final TeleopSwerve m_TeleopSwerve = new TeleopSwerve(m_robotDrive, m_driverController, translationAxis, strafeAxis, rotationAxis, true, true);
     
   private AutoCommandManager m_autoManager;
   private Map<String, Command> eventCommandMap = new HashMap<>();
@@ -167,8 +170,8 @@ public class RobotContainer {
 
     //Ground Intake
     m_driverController.leftTrigger()
-      .onTrue(m_groundIntakeCommand)
-      .onFalse(m_stowArmCommand);
+      .onTrue(m_groundIntakeAndSlowDownCommand)
+      .onFalse(m_stowArmAndSpeedUpCommand);
 
     //Scoring
     m_driverController.y()

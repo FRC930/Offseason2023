@@ -97,4 +97,14 @@ public class TeleopSwerve extends CommandBase {
         }
         Logger.getInstance().recordOutput("TeleopSwerve/percentSpeed", m_percentSpeed);
     }
+
+    public void forceSlowSpeed() {
+        m_percentSpeed = SLOW_SPEED;
+        Logger.getInstance().recordOutput("TeleopSwerve/percentSpeed", m_percentSpeed);
+    }
+
+    public void forceNormalSpeed() {
+        m_percentSpeed = NORMAL_SPEED;
+        Logger.getInstance().recordOutput("TeleopSwerve/percentSpeed", m_percentSpeed);
+    }
 }

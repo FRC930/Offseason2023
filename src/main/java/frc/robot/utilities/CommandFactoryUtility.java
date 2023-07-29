@@ -5,8 +5,10 @@ import java.util.Map;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.armcommands.RunManipulatorRollerCommand;
 import frc.robot.commands.armcommands.RunTopRollerCommand;
 import frc.robot.commands.armcommands.SetArmDegreesCommand;
@@ -41,8 +43,19 @@ public class CommandFactoryUtility {
         final Command command = 
             new SetArmDegreesCommand(m_armSubsystem, ARM_INTAKE_ANGLE)
                 .andThen(new RunTopRollerCommand(m_topRollerSubsystem, TopRollerSubsystem.ROLLER_INTAKE_SPEED))
-
                 .andThen(new RunManipulatorRollerCommand(m_manipulatorSubsystem, ManipulatorSubsystem.ROLLER_INTAKE_SPEED));
+        return command;
+    }
+
+    public static Command createIntakeAndSlowDownCommand(
+        ArmSubsystem m_armSubsystem,
+        ManipulatorSubsystem m_manipulatorSubsystem,
+        TopRollerSubsystem m_topRollerSubsystem, 
+        TeleopSwerve m_TeleopSwerve) {
+        final Command command = 
+                createIntakeCommand(m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem)
+                .andThen(m_armSubsystem.createWaitUntilAtAngleCommand().withTimeout(1.0))
+                .andThen(new InstantCommand(() -> m_TeleopSwerve.forceSlowSpeed()));
         return command;
     }
 
@@ -56,6 +69,18 @@ public class CommandFactoryUtility {
             .andThen(new SetArmDegreesCommand(m_armSubsystem, STOW_POSITION))
             .andThen(m_armSubsystem.createWaitUntilLessThanAngleCommand(170.0))    
             .andThen(m_armSubsystem.createWaitUntilGreaterThanAngleCommand(45.0));
+        return command;
+    }
+
+    public static Command createStowArmAndSpeedUpCommand(
+        ArmSubsystem m_armSubsystem,
+        ManipulatorSubsystem m_manipulatorSubsystem,
+        TopRollerSubsystem m_topRollerSubsystem, 
+        TeleopSwerve m_TeleopSwerve) {
+        final Command command = 
+            new InstantCommand(() -> m_TeleopSwerve.forceNormalSpeed())    
+            .andThen(createStowArmCommand(m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem));
+            
         return command;
     }
 
