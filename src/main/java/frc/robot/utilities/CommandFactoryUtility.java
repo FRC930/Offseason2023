@@ -57,7 +57,7 @@ public class CommandFactoryUtility {
                 .andThen(m_armSubsystem.createWaitUntilAtAngleCommand().withTimeout(1.0))
                 .andThen(new InstantCommand(() -> m_TeleopSwerve.forceSlowSpeed()))
 
-                .andThen(m_manipulatorSubsystem.waitUntilCurrentPast(15.0))
+                .andThen(m_manipulatorSubsystem.waitUntilCurrentPast(17.0))
                 .andThen(createStowArmAndSpeedUpCommand(m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem, m_TeleopSwerve));
         return command;
     }
