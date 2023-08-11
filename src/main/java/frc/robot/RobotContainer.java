@@ -9,7 +9,9 @@ import java.util.Map;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -71,6 +73,9 @@ public class RobotContainer {
 
   public static final int kDriverControllerPort = 0;
   public static final int kCodriverControllerPort = 1;
+  
+  // Creates air pressure for pistons to work
+  private final Compressor compressor = new Compressor(PneumaticsModuleType.REVPH);
    
  /* Modules */
   public final SwerveModuleConstants frontLeftModule = robotInfo.getFrontLeft();
@@ -91,7 +96,7 @@ public class RobotContainer {
   
   private final ArmSubsystem m_armSubsystem = new ArmSubsystem(Robot.isReal() ? new ArmIORobot(2, 4) : new ArmIOSim());
   private final ManipulatorSubsystem m_manipulatorSubsystem = new ManipulatorSubsystem(new ManipulatorIORobot(6, 7));
-  private final TopRollerSubsystem m_topRollerSubsystem = new TopRollerSubsystem(5);
+  private final TopRollerSubsystem m_topRollerSubsystem = new TopRollerSubsystem(5, 0);
   private final MechanismSimulator m_mechanismSimulator = new MechanismSimulator(m_armSubsystem, /*m_PitchIntakeSubsystem,*/ m_robotDrive);
 
   // Utilities \\
@@ -144,6 +149,11 @@ public class RobotContainer {
     // m_ExtendIntakeMotorSubsystem.setDefaultCommand(m_RetractIntakeCommand);
     // m_PitchIntakeSubsystem.setDefaultCommand(new PitchIntakeCommand(m_PitchIntakeSubsystem, 0));
     //stow arm position as default
+
+    // Sets the minimum and maximum pressure for the pneumatics system
+    // When the system is beneath the minimum psi, the compressor turns on
+    // When the system is above the maximum psi, the compressor turns off
+    compressor.enableAnalog(100, 115);
   }
   
   /**
