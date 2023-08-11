@@ -11,36 +11,45 @@ import edu.wpi.first.wpilibj.Preferences;
 
 public class ArmIORobot implements ArmIO {
 
-    private CANSparkMax m_armMotor;
+    private CANSparkMax m_leaderArmMotor;
+    private CANSparkMax m_followerArmMotor;
     
-    private AbsoluteEncoder m_armEncoder;
+    private AbsoluteEncoder m_leaderArmEncoder;
 
     private static final String PREFERENCE_NAME = "ArmOffsetDegrees";
     private static double m_armOffsetDegrees = Preferences.getDouble(PREFERENCE_NAME, -12.0);
 
     // 6.3 encoder value is 0
-    private static double m_armOffset = 36.0; //119.0; //1.3-12.0 this is minus 10.0  // 92.7+36.5;
+    private static double m_armOffset = 52.0;
     
 
-    public ArmIORobot(int armMotorID) {
-        m_armMotor = new CANSparkMax(armMotorID, MotorType.kBrushless);
+    public ArmIORobot(int leaderArmMotorID, int followerArmMotorID) {
+        m_leaderArmMotor = new CANSparkMax(leaderArmMotorID, MotorType.kBrushless);
+        // m_followerArmMotor = new CANSparkMax(followerArmMotorID, MotorType.kBrushless);
 
-        m_armMotor.restoreFactoryDefaults(); 
-        m_armMotor.setIdleMode(IdleMode.kBrake);
-        m_armMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 20);
-        m_armMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus5, 20);
+        m_leaderArmMotor.restoreFactoryDefaults(); 
+        m_leaderArmMotor.setIdleMode(IdleMode.kBrake);
+        m_leaderArmMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 20);
+        m_leaderArmMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus5, 20);
+
+        // m_followerArmMotor.restoreFactoryDefaults(); 
+        // m_followerArmMotor.setIdleMode(IdleMode.kBrake);
+        // m_followerArmMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 20);
+        // m_followerArmMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus5, 20);
 
         // Initializes Absolute Encoders from motors
-        m_armEncoder = m_armMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
+        m_leaderArmEncoder = m_leaderArmMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
 
         // Sets position and velocity conversion factors so units are in degrees and degrees/second
-        m_armEncoder.setPositionConversionFactor(360);
-        m_armEncoder.setVelocityConversionFactor(60);
+        m_leaderArmEncoder.setPositionConversionFactor(360);
+        m_leaderArmEncoder.setVelocityConversionFactor(60);
 
-        m_armEncoder.setInverted(true);
-        m_armMotor.setInverted(true);
+        m_leaderArmEncoder.setInverted(true);
+        m_leaderArmMotor.setInverted(true);
 
-        m_armEncoder.setZeroOffset((m_armOffset+m_armOffsetDegrees)%360);
+        m_leaderArmEncoder.setZeroOffset((m_armOffset+m_armOffsetDegrees)%360);
+
+        // m_followerArmMotor.follow(m_leaderArmMotor);
     }
 
     /**
@@ -59,7 +68,7 @@ public class ArmIORobot implements ArmIO {
      */
     @Override
     public double getCurrentAngleDegrees() {
-        return m_armEncoder.getPosition();
+        return m_leaderArmEncoder.getPosition();
     }
 
     /**
@@ -70,7 +79,7 @@ public class ArmIORobot implements ArmIO {
      */
     @Override
     public double getVelocityDegreesPerSecond() {
-        return m_armEncoder.getVelocity();
+        return m_leaderArmEncoder.getVelocity();
     }
 
     /**
@@ -81,13 +90,13 @@ public class ArmIORobot implements ArmIO {
      */
     @Override
     public void setVoltage(double volts) {
-        m_armMotor.setVoltage(volts);
+        m_leaderArmMotor.setVoltage(volts);
     }
 
     @Override
     public void adjustOffsetDegrees(double offsetDegrees) {
         m_armOffsetDegrees += offsetDegrees;
         Preferences.setDouble(PREFERENCE_NAME, m_armOffsetDegrees);
-        m_armEncoder.setZeroOffset ((m_armOffset + m_armOffsetDegrees) % 360);
+        m_leaderArmEncoder.setZeroOffset ((m_armOffset + m_armOffsetDegrees) % 360);
     }
 }

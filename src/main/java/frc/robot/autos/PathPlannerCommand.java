@@ -76,7 +76,6 @@ public class PathPlannerCommand extends SequentialCommandGroup {
         if (postCommand != null) {
             addCommands(postCommand);
         }
-
     }
 
     /**

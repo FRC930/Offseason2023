@@ -16,22 +16,13 @@ import frc.robot.utilities.CommandFactoryUtility;
 
 public class ArmSubsystem extends SubsystemBase {
 
+    public static double STOW_POSITION = CommandFactoryUtility.STOW_POSITION;
     
     private final ProfiledPIDController controller;
     private final ArmFeedforward ff;
     private final ArmIO m_armIO;
 
     private double targetPosition;
-
-    //TODO use offsets for positions
-    public static double HIGH_POSITION = CommandFactoryUtility.ARM_HIGH_SCORE_ANGLE; //at high arm position
-    public static double MEDIUM_POSITION = CommandFactoryUtility.ARM_MID_SCORE_ANGLE; //at medium arm position
-    public static double GROUND_POSITION = CommandFactoryUtility.ARM_LOW_SCORE_ANGLE; //at ground arm position
-    public static double STOW_POSITION = 84.0;//-60.0; //at arm Stow Position
-    public static double INTAKE_POSITION = CommandFactoryUtility.ARM_INTAKE_ANGLE; //for low intake Position
-    public static final double SUBSTATION_POSITION = CommandFactoryUtility.ARM_SUBSTATION_ANGLE;// TODO:find acutal position
-
-    public static double ARM_LENGTH = 27.12;
 
     /**
      * <h3>ArmSubsystem</h3>
@@ -44,13 +35,13 @@ public class ArmSubsystem extends SubsystemBase {
 
         // Sets up PID controller
         // controller = new ProfiledPIDController(0.2, 0, 0.02, new Constraints(225, 270));
-        controller = new ProfiledPIDController(0.25, 0, 0.025, new Constraints(225, 360)); //0.25
+        controller = new ProfiledPIDController(0.25, 0, 0.025, new Constraints(225, 200));
 
         controller.setTolerance(1, 1);
         controller.enableContinuousInput(0, 360);
 
         // TODO Change values when manipulator is added
-        ff = new ArmFeedforward(0, 1.0, 0);
+        ff = new ArmFeedforward(0, 0.65, 0);
         
         m_armIO = armIO;
 

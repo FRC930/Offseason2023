@@ -23,7 +23,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.autos.AutoCommandManager;
 import frc.robot.utilities.FieldCentricOffset;
 import frc.robot.utilities.GeometryUtils;
-import frc.robot.utilities.OdometryUtility;
 import frc.robot.utilities.SwerveModuleConstants;
 
 public class SwerveDrive extends SubsystemBase {
@@ -44,8 +43,6 @@ public class SwerveDrive extends SubsystemBase {
   private Pigeon2 m_pigeon = new Pigeon2(13, "rio"); // TODO pass in id and canbus CAN.pigeon);
 
   private SwerveDriveOdometry m_odometry;
-
-  private OdometryUtility m_aprilCameraOne;
 
   private double m_simYaw;
 
@@ -93,20 +90,11 @@ public class SwerveDrive extends SubsystemBase {
         autoThetaController = new PIDController(AutoCommandManager.kPThetaController, AutoCommandManager.kIThetaController, AutoCommandManager.kDThetaController);
         autoPitchController = new PIDController(1, 0, 0.1);
         
-    m_aprilCameraOne = new OdometryUtility(kDriveKinematics, getHeadingRotation2d(), getModulePositions(), getPoseMeters());
   }
 
   public Pose2d getPose() {
-    return m_aprilCameraOne.getPose();
+    return m_odometry.getPoseMeters();
   }
-
-  public Rotation2d getOffsetAngle(){
-    Rotation2d 
-    ninety = new Rotation2d(90);
-    Rotation2d offset = m_aprilCameraOne.getPose().getRotation().plus(
-                                    (ninety.minus(m_aprilCameraOne.getPose().getRotation().times(2))));
-    return offset;
-}
 
   public void drive(
       double throttle,
@@ -215,7 +203,6 @@ public class SwerveDrive extends SubsystemBase {
     if (moduleStates != null) {
       Logger.getInstance().recordOutput("SwerveModuleStates/Subsystem", moduleStates);
     }
-    m_aprilCameraOne.updateCameraPos(getHeadingRotation2d(), getModulePositions(), getPoseMeters());
     // kDriveKinematics, getHeadingRotation2d(), getModulePositions(),
     // getPoseMeters()
   }
@@ -251,7 +238,6 @@ public class SwerveDrive extends SubsystemBase {
 
   public void resetOdometry(Pose2d initialPose) {
     // resets the position of swerveEstimatorPoses
-    m_aprilCameraOne.resetPosition(getYaw(), getModulePositions(), initialPose);
     m_odometry.resetPosition(getYaw(), getModulePositions(), initialPose);
   }
 
@@ -300,13 +286,6 @@ public class SwerveDrive extends SubsystemBase {
     for (SwerveModule mod : mSwerveMods) {
       mod.resetAngleToAbsolute();
     }
-  }
-
-  /**
-   * Sets the origin for April Tags to be used by robot not using FMS ie practice or simulation
-   */
-  public void setOriginBasedOnAlliance() {
-    m_aprilCameraOne.setOriginBasedOnAlliance();
   }
 
   /**

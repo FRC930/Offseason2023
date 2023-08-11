@@ -2,7 +2,6 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.utilities.RotatePositions;
-import frc.robot.utilities.RotationMathUtility;
 
 import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.MathUtil;
@@ -26,7 +25,6 @@ public class TeleopSwerve extends CommandBase {
     private SwerveDrive m_Swerve;
     private RotatePositions m_rotatePositions;
     private CommandXboxController m_controller;
-    private RotationMathUtility m_rotationMathUtility;
     private int m_translationAxis;
     private int m_strafeAxis;
     private int m_rotationAxis;
@@ -62,8 +60,7 @@ public class TeleopSwerve extends CommandBase {
         m_openLoop = openLoop;
 
         m_rotatePositions = new RotatePositions();
-        m_rotationMathUtility = new RotationMathUtility();
-    }
+        }
 
     @Override
     public void execute() {
@@ -98,6 +95,16 @@ public class TeleopSwerve extends CommandBase {
         } else {
             m_percentSpeed = SLOW_SPEED;
         }
+        Logger.getInstance().recordOutput("TeleopSwerve/percentSpeed", m_percentSpeed);
+    }
+
+    public void forceSlowSpeed() {
+        m_percentSpeed = SLOW_SPEED;
+        Logger.getInstance().recordOutput("TeleopSwerve/percentSpeed", m_percentSpeed);
+    }
+
+    public void forceNormalSpeed() {
+        m_percentSpeed = NORMAL_SPEED;
         Logger.getInstance().recordOutput("TeleopSwerve/percentSpeed", m_percentSpeed);
     }
 }

@@ -21,40 +21,6 @@ public class ManipulatorIOSim implements ManipulatorIO {
     public void updateInputs() {
         sim.update(0.02);
     }
-    
-    /**
-     * <h3>getCurrentAngleDegrees</h3>
-     * Gets the wrist motor position in degrees.
-     * 
-     * @return the wrist motor position.
-     */
-    @Override
-    public double getCurrentAngleDegrees() {
-        return Units.radiansToDegrees(sim.getAngleRads());
-    }
-
-    /**
-     * <h3>getVelocityDegreesPerSecond</h3>
-     * Gets wrist motor velocity in degrees per second, converted from radians to
-     * degree
-     * 
-     * @return The wrist motor velocity
-     */
-    @Override
-    public double getVelocityDegreesPerSecond() {
-        return Units.radiansToDegrees(sim.getVelocityRadPerSec());
-    }
-
-    /**
-     * <h3>setVoltage
-     * <h3>
-     * Sets the wrist motor voltage
-     * @param volts
-     */
-    @Override
-    public void setVoltage(double volts) {
-        sim.setInputVoltage(volts);
-    }
     /**
      * <h3>getRollaerVoltagee
      * <h3>
@@ -81,10 +47,5 @@ public class ManipulatorIOSim implements ManipulatorIO {
     @Override
     public double getRollerCurrent() {
         return roller.getOutputCurrent();
-    }
-
-    @Override
-    public double getRealCurrentAngleDegrees() {
-        return 0.0;
     }
 }

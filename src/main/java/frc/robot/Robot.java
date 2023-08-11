@@ -16,7 +16,6 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.utilities.OdometryUtility;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -42,18 +41,6 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void robotInit() {
-
-    // Allow pyshical Photonvison cammera to be used while simulating on PC
-    // https://docs.photonvision.org/en/latest/docs/programming/photonlib/hardware-in-the-loop-sim.html
-    // NOTE Requires Photolib camera to run network server!!!! But this will break on setting is on when used on robot
-    if(RobotBase.isSimulation() && OdometryUtility.CONNECTED_PHOTOVISION_CAMERA) {
-      NetworkTableInstance inst = NetworkTableInstance.getDefault();
-      inst.stopServer();
-      // Change the IP address in the below function to the IP address you use to connect to the PhotonVision UI.
-      inst.setServer(OdometryUtility.PHOTOVISION_NETWORK_SERVER); // photonvision.local
-      inst.startClient4("Robot Simulation");
-   }
-
 
     //Advantage Kit
     Logger logger = Logger.getInstance();
