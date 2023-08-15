@@ -23,10 +23,12 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.AutoCommandManager;
 import frc.robot.autos.AutoCommandManager.subNames;
 import frc.robot.commands.AutoBalanceCommand;
+import frc.robot.commands.SlapstickCommand;
 import frc.robot.commands.SwerveLockCommand;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.simulation.FieldSim;
 import frc.robot.simulation.MechanismSimulator;
+import frc.robot.subsystems.SlapstickSubsystem;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.TopRollerSubsystem;
 import frc.robot.subsystems.arm.ArmIORobot;
@@ -98,6 +100,7 @@ public class RobotContainer {
   private final ManipulatorSubsystem m_manipulatorSubsystem = new ManipulatorSubsystem(new ManipulatorIORobot(6, 7));
   private final TopRollerSubsystem m_topRollerSubsystem = new TopRollerSubsystem(5, 0);
   private final MechanismSimulator m_mechanismSimulator = new MechanismSimulator(m_armSubsystem, /*m_PitchIntakeSubsystem,*/ m_robotDrive);
+  private final SlapstickSubsystem m_slapstickSubsystem = new SlapstickSubsystem(1);
 
   // Utilities \\
   // private final TimeOfFlightUtility m_timeOfFlight = new TimeOfFlightUtility(1);
@@ -153,7 +156,7 @@ public class RobotContainer {
     // Sets the minimum and maximum pressure for the pneumatics system
     // When the system is beneath the minimum psi, the compressor turns on
     // When the system is above the maximum psi, the compressor turns off
-    compressor.enableAnalog(100, 115);
+    compressor.enableAnalog(100, 115); // TODO: get values
   }
   
   /**
@@ -195,6 +198,11 @@ public class RobotContainer {
     )
     .and(m_driverController.leftTrigger().negate())
     .onFalse(m_stowArmCommand);
+
+    // Slapstick
+    m_codriverController.rightTrigger()
+      .onTrue(new SlapstickCommand(true, m_slapstickSubsystem))
+      .onFalse(new SlapstickCommand(false, m_slapstickSubsystem));
 
     //Scoring Positions
     m_codriverController.povUp().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.high));

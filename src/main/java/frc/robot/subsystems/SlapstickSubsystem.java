@@ -5,11 +5,11 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 
-public class SlapstickPistonSubsystem extends SubsystemBase{
+public class SlapstickSubsystem extends SubsystemBase{
 
     private final Solenoid m_slapstick;
 
-    public SlapstickPistonSubsystem(int solenoid_ID) {
+    public SlapstickSubsystem(int solenoid_ID) {
         
         //CTRE pneumatic hub has 8 slots. Cap is placed on simulation to prevent errors.
         m_slapstick = new Solenoid(
