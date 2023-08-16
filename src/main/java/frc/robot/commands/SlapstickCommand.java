@@ -18,11 +18,7 @@ public class SlapstickCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        if(open) {
-            m_piston.open();
-        } else {
-            m_piston.close();
-        }
+        m_piston.setState(open);
     }
 
     @Override

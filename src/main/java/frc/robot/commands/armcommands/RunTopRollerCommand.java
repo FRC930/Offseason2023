@@ -5,25 +5,23 @@ import frc.robot.subsystems.TopRollerSubsystem;
 
 public class RunTopRollerCommand extends CommandBase{
     
-    private double m_rollerSpeed;
-    private boolean m_pistonOpen;
+    private final double m_rollerSpeed;
+    private final boolean m_pistonOpen;
 
-    private TopRollerSubsystem m_topRoller;
+    private final TopRollerSubsystem m_topRoller;
 
     public RunTopRollerCommand(TopRollerSubsystem topRollerSubsystem, double speed, boolean pistonOpen) {
         m_topRoller = topRollerSubsystem;
         m_rollerSpeed = speed;
+        m_pistonOpen = pistonOpen;
+
         addRequirements(topRollerSubsystem);
     }
 
     @Override
     public void initialize() {
        m_topRoller.setRollerSpeed(m_rollerSpeed);
-       if(m_pistonOpen) {
-            m_topRoller.openPiston();
-       } else {
-            m_topRoller.closePiston();
-       }
+       m_topRoller.setPistonState(m_pistonOpen);
     }
 
     @Override

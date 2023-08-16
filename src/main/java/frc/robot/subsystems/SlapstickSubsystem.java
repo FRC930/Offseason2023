@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,19 +19,17 @@ public class SlapstickSubsystem extends SubsystemBase{
             solenoid_ID);
     }
 
-    public void toggle() {
+    public void togglePiston() {
         m_slapstick.set(!m_slapstick.get());
+        Logger.getInstance().recordOutput(this.getClass().getSimpleName() + "/pistonState", m_slapstick.get());
     }
     
-    public boolean isOpen() {
+    public boolean pistonIsOpen() {
         return m_slapstick.get();
     }
 
-    public void open() {
-        m_slapstick.set(true);
-    }
-
-    public void close() {
-        m_slapstick.set(false);
+    public void setState(boolean open) {
+        m_slapstick.set(open);
+        Logger.getInstance().recordOutput(this.getClass().getSimpleName() + "/pistonState", m_slapstick.get());
     }
 }

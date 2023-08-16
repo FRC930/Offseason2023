@@ -48,17 +48,15 @@ public class TopRollerSubsystem extends SubsystemBase{
     //-- PISTON --\\
     public void togglePiston() {
         rollerPiston.set(!rollerPiston.get());
+        Logger.getInstance().recordOutput(this.getClass().getSimpleName() + "/pistonState", rollerPiston.get());
     }
     
     public boolean pistonIsOpen() {
         return rollerPiston.get();
     }
 
-    public void openPiston() {
-        rollerPiston.set(true);
-    }
-
-    public void closePiston() {
-        rollerPiston.set(false);
+    public void setPistonState(boolean open) {
+        rollerPiston.set(open);
+        Logger.getInstance().recordOutput(this.getClass().getSimpleName() + "/pistonState", rollerPiston.get());
     }
 }
