@@ -14,6 +14,9 @@ public class ManipulatorIOSim implements ManipulatorIO {
             Units.inchesToMeters(9.4), -2 * Math.PI, 2 * Math.PI, true);
     private final SparkMaxWrapper roller = new SparkMaxWrapper(15, MotorType.kBrushless);
 
+    @Override
+    public void refollow() {}
+
       /**
      * <h3>updateInputs</h3>
      */

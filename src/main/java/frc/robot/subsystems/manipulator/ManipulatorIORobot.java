@@ -35,7 +35,7 @@ public class ManipulatorIORobot implements ManipulatorIO {
         followerRoller.restoreFactoryDefaults();
         followerRoller.setIdleMode(IdleMode.kBrake);
         
-        followerRoller.follow(leaderRoller, true);
+        refollow();
 
         // TODO: Determine if this helps encoder position update faster
         leaderRoller.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 20);
@@ -45,6 +45,10 @@ public class ManipulatorIORobot implements ManipulatorIO {
         //roller.setSmartCurrentLimit(STALL_LIMIT, FREE_LIMIT);
 
         leaderRoller.setInverted(true);
+    }
+    @Override
+    public void refollow() {
+        followerRoller.follow(leaderRoller, true);
     }
      /**
      * <h3>updateInputs</h3>

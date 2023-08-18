@@ -249,8 +249,10 @@ public class RobotContainer {
     if(!DriverStation.isFMSAttached()) {
       // m_robotDrive.setOriginBasedOnAlliance(); No longer using since April Tags are no longer being used
     }
+    
+    refollowAllMotors();
 
-}
+  }
 
   public void periodic() {
     checkDSUpdate();
@@ -268,6 +270,23 @@ public class RobotContainer {
   }
 
   public void disabledInit() {
+  }
+
+  public void testInit() {
+    stopSubsystems();
+    refollowAllMotors();
+  }
+
+  public void testExit() {
+    refollowAllMotors();
+  }
+
+  private void refollowAllMotors() {
+    m_manipulatorSubsystem.refollowMotors();
+  }
+
+  private void stopSubsystems() {
+    m_manipulatorSubsystem.setRollerSpeed(0.0);
   }
 
 }
