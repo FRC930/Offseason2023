@@ -277,6 +277,24 @@ public class RobotContainer {
     refollowAllMotors();
   }
 
+  public void testPeriodic() {
+    
+    // Moves slapstick when left bumper is pressed.
+    if (m_driverController.leftBumper().getAsBoolean()) {
+      m_slapstickSubsystem.setState(true);
+    } else{
+      m_slapstickSubsystem.setState(false);
+    }
+
+    // Moves top piston when right bumper is pressed.
+    if(m_driverController.rightBumper().getAsBoolean()){
+      m_topRollerSubsystem.setPistonState(true); 
+    }else{
+      m_topRollerSubsystem.setPistonState(false);
+    }
+
+  }
+
   public void testExit() {
     refollowAllMotors();
   }
