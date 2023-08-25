@@ -137,6 +137,13 @@ public class CommandFactoryUtility {
         return command;
     }
 
+    public static Command createStopSpeedCommand(ManipulatorSubsystem m_ManipulatorSubsystem) {
+        Command command;
+
+        command = new RunManipulatorRollerCommand(m_ManipulatorSubsystem, 0.0);
+        return command;
+    }
+
     /**
      * addAutoCommandEvent
      *  Add event command to event map for autonomous paths

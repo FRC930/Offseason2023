@@ -30,10 +30,10 @@ public class ManipulatorIORobot implements ManipulatorIO {
         followerRoller = new SparkMaxWrapper(followerRollerID, MotorType.kBrushless);
 
         leaderRoller.restoreFactoryDefaults();
-        leaderRoller.setIdleMode(IdleMode.kBrake);
+        leaderRoller.setIdleMode(IdleMode.kCoast);
 
         followerRoller.restoreFactoryDefaults();
-        followerRoller.setIdleMode(IdleMode.kBrake);
+        followerRoller.setIdleMode(IdleMode.kCoast);
         
         refollow();
 

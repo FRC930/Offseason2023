@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.AutoCommandManager;
@@ -204,6 +205,10 @@ public class RobotContainer {
       .onTrue(new SlapstickCommand(true, m_slapstickSubsystem))
       .onFalse(new SlapstickCommand(false, m_slapstickSubsystem));
 
+    m_codriverController.leftTrigger()
+      .onTrue(CommandFactoryUtility.createMaxSpeedCommand(m_manipulatorSubsystem))
+      .onFalse(CommandFactoryUtility.createStopSpeedCommand(m_manipulatorSubsystem));
+
     //Scoring Positions
     m_codriverController.povUp().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.high));
     m_codriverController.povLeft().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.medium));
@@ -211,9 +216,11 @@ public class RobotContainer {
     m_codriverController.povDown().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.low));
 
     m_driverController.rightTrigger()
-      .onTrue(CommandFactoryUtility.createMaxSpeedCommand(m_manipulatorSubsystem))
-      .onFalse(CommandFactoryUtility.createHoldSpeedCommand(m_manipulatorSubsystem));
-   
+      .onTrue(new SlapstickCommand(true, m_slapstickSubsystem)
+        .andThen(new WaitCommand(0.5))
+        .andThen(CommandFactoryUtility.createMaxSpeedCommand(m_manipulatorSubsystem)))
+      .onFalse(new SlapstickCommand(false, m_slapstickSubsystem)
+        .andThen(CommandFactoryUtility.createHoldSpeedCommand(m_manipulatorSubsystem)));
   }
 
   void checkDSUpdate() {
@@ -279,6 +286,9 @@ public class RobotContainer {
 
   public void testPeriodic() {
     
+    /*
+     * Code for testing slapstick and top piston
+     * 
     // Moves slapstick when left bumper is pressed.
     if (m_driverController.leftBumper().getAsBoolean()) {
       m_slapstickSubsystem.setState(true);
@@ -292,6 +302,7 @@ public class RobotContainer {
     }else{
       m_topRollerSubsystem.setPistonState(false);
     }
+    */
 
   }
 
