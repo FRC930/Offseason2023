@@ -177,7 +177,7 @@ public class RobotContainer {
     //--CODRIVER CONTROLLER--//
 
     // Slow drive
-    m_driverController.leftStick().onTrue(new InstantCommand(() -> m_TeleopSwerve.toggleSpeed()));
+    m_driverController.rightTrigger().onTrue(new InstantCommand(() -> m_TeleopSwerve.toggleSpeed()));
   
     //Lock wheels in an X position
     m_driverController.a().toggleOnTrue(m_SwerveLockCommand);
@@ -185,7 +185,7 @@ public class RobotContainer {
     //Ground Intake
     m_driverController.leftTrigger()
       .onTrue(m_groundIntakeAndSlowDownCommand)
-      .onFalse(m_stowArmAndSpeedUpCommand);
+      .onFalse(m_stowArmCommand);
 
     //Scoring
     m_driverController.y()
@@ -215,12 +215,12 @@ public class RobotContainer {
     m_codriverController.povRight().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.medium));
     m_codriverController.povDown().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.low));
 
-    m_driverController.rightTrigger()
-      .onTrue(new SlapstickCommand(true, m_slapstickSubsystem)
-        .andThen(new WaitCommand(0.5))
-        .andThen(CommandFactoryUtility.createMaxSpeedCommand(m_manipulatorSubsystem)))
-      .onFalse(new SlapstickCommand(false, m_slapstickSubsystem)
-        .andThen(CommandFactoryUtility.createHoldSpeedCommand(m_manipulatorSubsystem)));
+    // m_driverController.rightTrigger()
+    //   .onTrue(new SlapstickCommand(true, m_slapstickSubsystem)
+    //     .andThen(new WaitCommand(0.5))
+    //     .andThen(CommandFactoryUtility.createMaxSpeedCommand(m_manipulatorSubsystem)))
+    //   .onFalse(new SlapstickCommand(false, m_slapstickSubsystem)
+    //     .andThen(CommandFactoryUtility.createHoldSpeedCommand(m_manipulatorSubsystem)));
   }
 
   void checkDSUpdate() {
