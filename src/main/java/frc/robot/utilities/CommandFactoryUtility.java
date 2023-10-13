@@ -18,7 +18,7 @@ import frc.robot.subsystems.TopRollerSubsystem;
 
 public class CommandFactoryUtility {
     //Cube Ground Intake
-    public static final double ARM_INTAKE_ANGLE = -5.0;
+    public static final double ARM_INTAKE_ANGLE = 0.0;
 
     //Stow Position
     public static double STOW_POSITION = 135.0;
@@ -42,7 +42,7 @@ public class CommandFactoryUtility {
         TopRollerSubsystem m_topRollerSubsystem) {
         final Command command = 
             new SetArmDegreesCommand(m_armSubsystem, ARM_INTAKE_ANGLE)
-                .andThen(new RunTopRollerCommand(m_topRollerSubsystem, TopRollerSubsystem.ROLLER_INTAKE_SPEED))
+                .andThen(new RunTopRollerCommand(m_topRollerSubsystem, TopRollerSubsystem.ROLLER_INTAKE_SPEED, true))
                 .andThen(new RunManipulatorRollerCommand(m_manipulatorSubsystem, ManipulatorSubsystem.ROLLER_INTAKE_SPEED));
         return command;
     }
@@ -68,7 +68,7 @@ public class CommandFactoryUtility {
         TopRollerSubsystem m_topRollerSubsystem) {
         final Command command = 
             new RunManipulatorRollerCommand(m_manipulatorSubsystem, ManipulatorSubsystem.HOLD_SPEED)
-            .andThen(new RunTopRollerCommand(m_topRollerSubsystem, 0.0))
+            .andThen(new RunTopRollerCommand(m_topRollerSubsystem, 0.0, false))
             .andThen(new SetArmDegreesCommand(m_armSubsystem, STOW_POSITION))
             .andThen(m_armSubsystem.createWaitUntilLessThanAngleCommand(170.0))    
             .andThen(m_armSubsystem.createWaitUntilGreaterThanAngleCommand(45.0));
@@ -134,6 +134,13 @@ public class CommandFactoryUtility {
         Command command;
 
         command = new RunManipulatorRollerCommand(m_ManipulatorSubsystem, ManipulatorSubsystem.HOLD_SPEED);
+        return command;
+    }
+
+    public static Command createStopSpeedCommand(ManipulatorSubsystem m_ManipulatorSubsystem) {
+        Command command;
+
+        command = new RunManipulatorRollerCommand(m_ManipulatorSubsystem, 0.0);
         return command;
     }
 

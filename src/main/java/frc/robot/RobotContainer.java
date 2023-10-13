@@ -9,22 +9,27 @@ import java.util.Map;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.AutoCommandManager;
 import frc.robot.autos.AutoCommandManager.subNames;
 import frc.robot.commands.AutoBalanceCommand;
+import frc.robot.commands.SlapstickCommand;
 import frc.robot.commands.SwerveLockCommand;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.simulation.FieldSim;
 import frc.robot.simulation.MechanismSimulator;
+import frc.robot.subsystems.SlapstickSubsystem;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.TopRollerSubsystem;
 import frc.robot.subsystems.arm.ArmIORobot;
@@ -64,13 +69,16 @@ public class RobotContainer {
     RobotInformation robotInfo = 
         // Non-Competition robot attributes
         new RobotInformation(WhichRobot.PRACTICE_ROBOT,
-          new SwerveModuleConstants(8, 9, 9, 114.69),
-          new SwerveModuleConstants(11, 10, 10, 235.1),
-          new SwerveModuleConstants(1, 3, 3, 84.28),
-          new SwerveModuleConstants(18, 19, 19, 9.75));
+          new SwerveModuleConstants(8, 9, 9, 113.818), 
+          new SwerveModuleConstants(11, 10, 10, 232.031), 
+          new SwerveModuleConstants(1, 3, 3, 89.033), 
+          new SwerveModuleConstants(18, 19, 19, 6.064)); 
 
   public static final int kDriverControllerPort = 0;
   public static final int kCodriverControllerPort = 1;
+  
+  // Creates air pressure for pistons to work
+  private final Compressor compressor = new Compressor(PneumaticsModuleType.REVPH);
    
  /* Modules */
   public final SwerveModuleConstants frontLeftModule = robotInfo.getFrontLeft();
@@ -91,8 +99,9 @@ public class RobotContainer {
   
   private final ArmSubsystem m_armSubsystem = new ArmSubsystem(Robot.isReal() ? new ArmIORobot(2, 4) : new ArmIOSim());
   private final ManipulatorSubsystem m_manipulatorSubsystem = new ManipulatorSubsystem(new ManipulatorIORobot(6, 7));
-  private final TopRollerSubsystem m_topRollerSubsystem = new TopRollerSubsystem(5);
+  private final TopRollerSubsystem m_topRollerSubsystem = new TopRollerSubsystem(5, 0);
   private final MechanismSimulator m_mechanismSimulator = new MechanismSimulator(m_armSubsystem, /*m_PitchIntakeSubsystem,*/ m_robotDrive);
+  private final SlapstickSubsystem m_slapstickSubsystem = new SlapstickSubsystem(1);
 
   // Utilities \\
   // private final TimeOfFlightUtility m_timeOfFlight = new TimeOfFlightUtility(1);
@@ -144,6 +153,11 @@ public class RobotContainer {
     // m_ExtendIntakeMotorSubsystem.setDefaultCommand(m_RetractIntakeCommand);
     // m_PitchIntakeSubsystem.setDefaultCommand(new PitchIntakeCommand(m_PitchIntakeSubsystem, 0));
     //stow arm position as default
+
+    // Sets the minimum and maximum pressure for the pneumatics system
+    // When the system is beneath the minimum psi, the compressor turns on
+    // When the system is above the maximum psi, the compressor turns off
+    compressor.enableAnalog(100, 115); // TODO: get values
   }
   
   /**
@@ -163,7 +177,7 @@ public class RobotContainer {
     //--CODRIVER CONTROLLER--//
 
     // Slow drive
-    m_driverController.leftStick().onTrue(new InstantCommand(() -> m_TeleopSwerve.toggleSpeed()));
+    m_driverController.rightTrigger().onTrue(new InstantCommand(() -> m_TeleopSwerve.toggleSpeed()));
   
     //Lock wheels in an X position
     m_driverController.a().toggleOnTrue(m_SwerveLockCommand);
@@ -171,7 +185,7 @@ public class RobotContainer {
     //Ground Intake
     m_driverController.leftTrigger()
       .onTrue(m_groundIntakeAndSlowDownCommand)
-      .onFalse(m_stowArmAndSpeedUpCommand);
+      .onFalse(m_stowArmCommand);
 
     //Scoring
     m_driverController.y()
@@ -186,16 +200,27 @@ public class RobotContainer {
     .and(m_driverController.leftTrigger().negate())
     .onFalse(m_stowArmCommand);
 
+    // Slapstick
+    m_codriverController.rightTrigger()
+      .onTrue(new SlapstickCommand(true, m_slapstickSubsystem))
+      .onFalse(new SlapstickCommand(false, m_slapstickSubsystem));
+
+    m_codriverController.leftTrigger()
+      .onTrue(CommandFactoryUtility.createMaxSpeedCommand(m_manipulatorSubsystem))
+      .onFalse(CommandFactoryUtility.createStopSpeedCommand(m_manipulatorSubsystem));
+
     //Scoring Positions
     m_codriverController.povUp().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.high));
     m_codriverController.povLeft().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.medium));
     m_codriverController.povRight().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.medium));
     m_codriverController.povDown().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.low));
 
-    m_driverController.rightTrigger()
-      .onTrue(CommandFactoryUtility.createMaxSpeedCommand(m_manipulatorSubsystem))
-      .onFalse(CommandFactoryUtility.createHoldSpeedCommand(m_manipulatorSubsystem));
-   
+    // m_driverController.rightTrigger()
+    //   .onTrue(new SlapstickCommand(true, m_slapstickSubsystem)
+    //     .andThen(new WaitCommand(0.5))
+    //     .andThen(CommandFactoryUtility.createMaxSpeedCommand(m_manipulatorSubsystem)))
+    //   .onFalse(new SlapstickCommand(false, m_slapstickSubsystem)
+    //     .andThen(CommandFactoryUtility.createHoldSpeedCommand(m_manipulatorSubsystem)));
   }
 
   void checkDSUpdate() {
@@ -231,8 +256,10 @@ public class RobotContainer {
     if(!DriverStation.isFMSAttached()) {
       // m_robotDrive.setOriginBasedOnAlliance(); No longer using since April Tags are no longer being used
     }
+    
+    refollowAllMotors();
 
-}
+  }
 
   public void periodic() {
     checkDSUpdate();
@@ -250,6 +277,45 @@ public class RobotContainer {
   }
 
   public void disabledInit() {
+  }
+
+  public void testInit() {
+    stopSubsystems();
+    refollowAllMotors();
+  }
+
+  public void testPeriodic() {
+    
+    /*
+     * Code for testing slapstick and top piston
+     * 
+    // Moves slapstick when left bumper is pressed.
+    if (m_driverController.leftBumper().getAsBoolean()) {
+      m_slapstickSubsystem.setState(true);
+    } else{
+      m_slapstickSubsystem.setState(false);
+    }
+
+    // Moves top piston when right bumper is pressed.
+    if(m_driverController.rightBumper().getAsBoolean()){
+      m_topRollerSubsystem.setPistonState(true); 
+    }else{
+      m_topRollerSubsystem.setPistonState(false);
+    }
+    */
+
+  }
+
+  public void testExit() {
+    refollowAllMotors();
+  }
+
+  private void refollowAllMotors() {
+    m_manipulatorSubsystem.refollowMotors();
+  }
+
+  private void stopSubsystems() {
+    m_manipulatorSubsystem.setRollerSpeed(0.0);
   }
 
 }

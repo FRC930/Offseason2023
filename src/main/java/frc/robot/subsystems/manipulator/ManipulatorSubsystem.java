@@ -74,4 +74,8 @@ public class ManipulatorSubsystem extends SubsystemBase {
         Debouncer debouncer = new Debouncer(.1); //Creates a debouncer to confirm amps are greater than value for .1 seconds
         return Commands.waitUntil(() -> debouncer.calculate(this.getRollerCurrent() > amps));
     }
+
+    public void refollowMotors() {
+        m_io.refollow();
+    }
 }
