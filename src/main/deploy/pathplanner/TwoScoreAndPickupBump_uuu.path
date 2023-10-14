@@ -137,9 +137,12 @@
         "x": 5.562252129661726,
         "y": 2.572847723209863
       },
-      "nextControl": null,
+      "nextControl": {
+        "x": 5.562252129661726,
+        "y": 2.572847723209863
+      },
       "holonomicAngle": 0,
-      "isReversal": false,
+      "isReversal": true,
       "velOverride": null,
       "isLocked": false,
       "isStopPoint": false,
@@ -147,6 +150,28 @@
         "names": [
           "stowArm"
         ],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 4.256410795275228,
+        "y": 0.6289501880002328
+      },
+      "prevControl": {
+        "x": 6.223309565021413,
+        "y": 0.503160150400186
+      },
+      "nextControl": null,
+      "holonomicAngle": 0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
         "executionBehavior": "parallel",
         "waitBehavior": "none",
         "waitTime": 0
@@ -179,6 +204,12 @@
       "position": 3.0,
       "names": [
         "stowArm"
+      ]
+    },
+    {
+      "position": 5.803636363636368,
+      "names": [
+        "shootCube"
       ]
     }
   ]

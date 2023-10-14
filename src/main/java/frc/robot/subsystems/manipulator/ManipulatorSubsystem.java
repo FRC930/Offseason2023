@@ -24,7 +24,7 @@ public class ManipulatorSubsystem extends SubsystemBase {
 
     public static final double LOW_SCORE_SPEED = -0.1; 
     public static final double MEDIUM_SCORE_SPEED = -0.25;
-    public static final double HIGH_SCORE_SPEED = -0.9; 
+    public static final double HIGH_SCORE_SPEED = -0.85; 
 
     public static final double MAX_SPEED = -1.0;
 
