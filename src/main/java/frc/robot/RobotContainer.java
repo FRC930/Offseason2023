@@ -177,15 +177,20 @@ public class RobotContainer {
     //--CODRIVER CONTROLLER--//
 
     // Slow drive
-    m_driverController.rightTrigger().onTrue(new InstantCommand(() -> m_TeleopSwerve.toggleSpeed()));
+    // m_driverController.rightTrigger().onTrue(new InstantCommand(() -> m_TeleopSwerve.toggleSpeed()));
   
     //Lock wheels in an X position
-    m_driverController.a().toggleOnTrue(m_SwerveLockCommand);
+    // m_driverController.a().toggleOnTrue(m_SwerveLockCommand);
 
     //Ground Intake
     m_driverController.leftTrigger()
       .onTrue(m_groundIntakeAndSlowDownCommand)
-      .onFalse(m_stowArmCommand);
+      .onFalse(m_stowArmCommand)
+      .and(m_codriverController.leftTrigger().negate());
+      
+    m_codriverController.leftTrigger()
+    .onTrue(m_groundIntakeAndSlowDownCommand)
+    .onFalse(m_stowArmCommand);
 
     //Scoring
     m_driverController.y()
@@ -205,9 +210,9 @@ public class RobotContainer {
       .onTrue(new SlapstickCommand(true, m_slapstickSubsystem))
       .onFalse(new SlapstickCommand(false, m_slapstickSubsystem));
 
-    m_codriverController.leftTrigger()
-      .onTrue(CommandFactoryUtility.createMaxSpeedCommand(m_manipulatorSubsystem))
-      .onFalse(CommandFactoryUtility.createStopSpeedCommand(m_manipulatorSubsystem));
+    // m_codriverController.leftTrigger()
+    //   .onTrue(CommandFactoryUtility.createMaxSpeedCommand(m_manipulatorSubsystem))
+    //   .onFalse(CommandFactoryUtility.createStopSpeedCommand(m_manipulatorSubsystem));
 
     //Scoring Positions
     m_codriverController.povUp().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.high));
