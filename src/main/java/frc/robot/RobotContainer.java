@@ -69,10 +69,10 @@ public class RobotContainer {
     RobotInformation robotInfo = 
         // Non-Competition robot attributes
         new RobotInformation(WhichRobot.PRACTICE_ROBOT,
-          new SwerveModuleConstants(8, 9, 9, 113.818), 
-          new SwerveModuleConstants(11, 10, 10, 232.031), 
-          new SwerveModuleConstants(1, 3, 3, 89.033), 
-          new SwerveModuleConstants(18, 19, 19, 6.064)); 
+          new SwerveModuleConstants(8, 9, 9, 107.578), 
+          new SwerveModuleConstants(11, 10, 10, 232.471), 
+          new SwerveModuleConstants(1, 3, 3, 90.615),
+          new SwerveModuleConstants(18, 19, 19, 5.273)); 
 
   public static final int kDriverControllerPort = 0;
   public static final int kCodriverControllerPort = 1;
@@ -177,15 +177,20 @@ public class RobotContainer {
     //--CODRIVER CONTROLLER--//
 
     // Slow drive
-    m_driverController.rightTrigger().onTrue(new InstantCommand(() -> m_TeleopSwerve.toggleSpeed()));
+    // m_driverController.rightTrigger().onTrue(new InstantCommand(() -> m_TeleopSwerve.toggleSpeed()));
   
     //Lock wheels in an X position
-    m_driverController.a().toggleOnTrue(m_SwerveLockCommand);
+    // m_driverController.a().toggleOnTrue(m_SwerveLockCommand);
 
     //Ground Intake
     m_driverController.leftTrigger()
       .onTrue(m_groundIntakeAndSlowDownCommand)
-      .onFalse(m_stowArmCommand);
+      .onFalse(m_stowArmCommand)
+      .and(m_codriverController.leftTrigger().negate());
+      
+    m_codriverController.leftTrigger()
+    .onTrue(m_groundIntakeAndSlowDownCommand)
+    .onFalse(m_stowArmCommand);
 
     //Scoring
     m_driverController.y()
@@ -205,9 +210,9 @@ public class RobotContainer {
       .onTrue(new SlapstickCommand(true, m_slapstickSubsystem))
       .onFalse(new SlapstickCommand(false, m_slapstickSubsystem));
 
-    m_codriverController.leftTrigger()
-      .onTrue(CommandFactoryUtility.createMaxSpeedCommand(m_manipulatorSubsystem))
-      .onFalse(CommandFactoryUtility.createStopSpeedCommand(m_manipulatorSubsystem));
+    // m_codriverController.leftTrigger()
+    //   .onTrue(CommandFactoryUtility.createMaxSpeedCommand(m_manipulatorSubsystem))
+    //   .onFalse(CommandFactoryUtility.createStopSpeedCommand(m_manipulatorSubsystem));
 
     //Scoring Positions
     m_codriverController.povUp().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.high));
