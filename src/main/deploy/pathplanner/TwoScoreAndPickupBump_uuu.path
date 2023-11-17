@@ -76,16 +76,16 @@
     },
     {
       "anchorPoint": {
-        "x": 7.229629865821786,
-        "y": 0.9377075530185282
+        "x": 7.046662538403536,
+        "y": 0.89
       },
       "prevControl": {
-        "x": 5.048568751562805,
-        "y": 0.8920308804686036
+        "x": 4.865601424144556,
+        "y": 0.8443233274500755
       },
       "nextControl": {
-        "x": 5.048568751562805,
-        "y": 0.8920308804686036
+        "x": 4.865601424144556,
+        "y": 0.8443233274500755
       },
       "holonomicAngle": 0,
       "isReversal": true,
@@ -130,12 +130,64 @@
     },
     {
       "anchorPoint": {
-        "x": 7.128339726764924,
-        "y": 2.181061114258982
+        "x": 7.103839828221739,
+        "y": 2.3
       },
       "prevControl": {
-        "x": 5.586752028204911,
-        "y": 2.2724144593588345
+        "x": 5.562252129661726,
+        "y": 2.3913533450998523
+      },
+      "nextControl": {
+        "x": 5.562252129661726,
+        "y": 2.3913533450998523
+      },
+      "holonomicAngle": 0,
+      "isReversal": true,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [
+          "stowArm"
+        ],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 4.329572986069051,
+        "y": 0.6359049256560071
+      },
+      "prevControl": {
+        "x": 6.6612243801410695,
+        "y": 0.019269846232001578
+      },
+      "nextControl": {
+        "x": 6.6612243801410695,
+        "y": 0.019269846232001578
+      },
+      "holonomicAngle": -13.324531261890906,
+      "isReversal": true,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 7.435468109167318,
+        "y": 1.4980449932369182
+      },
+      "prevControl": {
+        "x": 5.085481497639172,
+        "y": 1.652423675746067
       },
       "nextControl": null,
       "holonomicAngle": 0,
@@ -144,9 +196,7 @@
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [
-          "stowArm"
-        ],
+        "names": [],
         "executionBehavior": "parallel",
         "waitBehavior": "none",
         "waitTime": 0
@@ -177,6 +227,18 @@
     },
     {
       "position": 3.0,
+      "names": [
+        "stowArm"
+      ]
+    },
+    {
+      "position": 5.803636363636368,
+      "names": [
+        "shootCube"
+      ]
+    },
+    {
+      "position": 5.1,
       "names": [
         "stowArm"
       ]
