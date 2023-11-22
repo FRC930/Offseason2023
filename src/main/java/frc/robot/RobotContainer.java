@@ -174,23 +174,17 @@ public class RobotContainer {
     
     //Final Button Bindings
     //--DRIVER CONTROLLER--//
-    //--CODRIVER CONTROLLER--//
 
     // Slow drive
-    // m_driverController.rightTrigger().onTrue(new InstantCommand(() -> m_TeleopSwerve.toggleSpeed()));
+    m_driverController.rightTrigger().onTrue(new InstantCommand(() -> m_TeleopSwerve.toggleSpeed()));
   
     //Lock wheels in an X position
-    // m_driverController.a().toggleOnTrue(m_SwerveLockCommand);
+    m_driverController.a().toggleOnTrue(m_SwerveLockCommand);
 
     //Ground Intake
     m_driverController.leftTrigger()
       .onTrue(m_groundIntakeAndSlowDownCommand)
-      .onFalse(m_stowArmCommand)
-      .and(m_codriverController.leftTrigger().negate());
-      
-    m_codriverController.leftTrigger()
-    .onTrue(m_groundIntakeAndSlowDownCommand)
-    .onFalse(m_stowArmCommand);
+      .onFalse(m_stowArmCommand);
 
     //Scoring
     m_driverController.y()
@@ -205,27 +199,29 @@ public class RobotContainer {
     .and(m_driverController.leftTrigger().negate())
     .onFalse(m_stowArmCommand);
 
-    // Slapstick
-    m_codriverController.rightTrigger()
-      .onTrue(new SlapstickCommand(true, m_slapstickSubsystem))
-      .onFalse(new SlapstickCommand(false, m_slapstickSubsystem));
-
-    // m_codriverController.leftTrigger()
-    //   .onTrue(CommandFactoryUtility.createMaxSpeedCommand(m_manipulatorSubsystem))
-    //   .onFalse(CommandFactoryUtility.createStopSpeedCommand(m_manipulatorSubsystem));
-
-    //Scoring Positions
-    m_codriverController.povUp().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.high));
-    m_codriverController.povLeft().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.medium));
-    m_codriverController.povRight().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.medium));
-    m_codriverController.povDown().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.low));
-
     // m_driverController.rightTrigger()
     //   .onTrue(new SlapstickCommand(true, m_slapstickSubsystem)
     //     .andThen(new WaitCommand(0.5))
     //     .andThen(CommandFactoryUtility.createMaxSpeedCommand(m_manipulatorSubsystem)))
     //   .onFalse(new SlapstickCommand(false, m_slapstickSubsystem)
     //     .andThen(CommandFactoryUtility.createHoldSpeedCommand(m_manipulatorSubsystem)));
+
+    //--CODRIVER CONTROLLER--//
+
+    // Slapstick
+    m_codriverController.rightTrigger()
+      .onTrue(new SlapstickCommand(true, m_slapstickSubsystem))
+      .onFalse(new SlapstickCommand(false, m_slapstickSubsystem));
+
+    m_codriverController.leftTrigger()
+      .onTrue(CommandFactoryUtility.createMaxSpeedCommand(m_manipulatorSubsystem))
+      .onFalse(CommandFactoryUtility.createStopSpeedCommand(m_manipulatorSubsystem));
+
+    //Scoring Positions
+    m_codriverController.povUp().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.high));
+    m_codriverController.povLeft().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.medium));
+    m_codriverController.povRight().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.medium));
+    m_codriverController.povDown().toggleOnTrue(m_targetScorePositionUtility.setDesiredTargetCommand(Target.low));
   }
 
   void checkDSUpdate() {
