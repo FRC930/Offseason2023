@@ -40,7 +40,7 @@ public class SwerveModule extends SubsystemBase {
   
   // Verified Values
   // https://www.swervedrivespecialties.com/collections/kits/products/mk4i-swerve-module?variant=39598777303153
-  public static final double kDriveMotorGearRatio = 6.75; // MK4i L2 Neo
+  public static final double kDriveMotorGearRatio = 6.12; // MK4i L3 Neo
   public static final double kTurningMotorGearRatio = 150.0 / 7.0; // MK4i turning ratio MK4i Neo
   public static final int kNeoCPR = 42;
   public static final int kNeoRPM = 5676;

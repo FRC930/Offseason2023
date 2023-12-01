@@ -7,4 +7,5 @@ public interface ManipulatorIO {
     public double getRollerVoltage();
     public void setRollerSpeed(double speed);
     public double getRollerCurrent();
+    public void refollow();
 }

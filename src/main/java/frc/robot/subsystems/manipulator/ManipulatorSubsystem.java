@@ -23,8 +23,8 @@ public class ManipulatorSubsystem extends SubsystemBase {
     public static final double HOLD_SPEED = 0.1; 
 
     public static final double LOW_SCORE_SPEED = -0.1; 
-    public static final double MEDIUM_SCORE_SPEED = -0.3;
-    public static final double HIGH_SCORE_SPEED = -1.0; 
+    public static final double MEDIUM_SCORE_SPEED = -0.25;
+    public static final double HIGH_SCORE_SPEED = -0.85; 
 
     public static final double MAX_SPEED = -1.0;
 
@@ -73,5 +73,9 @@ public class ManipulatorSubsystem extends SubsystemBase {
     public Command waitUntilCurrentPast(double amps) { 
         Debouncer debouncer = new Debouncer(.1); //Creates a debouncer to confirm amps are greater than value for .1 seconds
         return Commands.waitUntil(() -> debouncer.calculate(this.getRollerCurrent() > amps));
+    }
+
+    public void refollowMotors() {
+        m_io.refollow();
     }
 }
