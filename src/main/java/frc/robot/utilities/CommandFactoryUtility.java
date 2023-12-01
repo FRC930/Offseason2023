@@ -8,12 +8,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.LimeLightIntakeCommand;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.armcommands.RunManipulatorRollerCommand;
 import frc.robot.commands.armcommands.RunTopRollerCommand;
 import frc.robot.commands.armcommands.SetArmDegreesCommand;
 import frc.robot.subsystems.arm.ArmSubsystem;
 import frc.robot.subsystems.manipulator.ManipulatorSubsystem;
+import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.TopRollerSubsystem;
 
 public class CommandFactoryUtility {
@@ -136,6 +138,25 @@ public class CommandFactoryUtility {
         command = new RunManipulatorRollerCommand(m_ManipulatorSubsystem, ManipulatorSubsystem.HOLD_SPEED);
         return command;
     }
+    
+    public static Command createAutoIntakecommand(
+        SwerveDrive m_SwerveDrive,
+        ArmSubsystem m_ArmSubsystem,
+        ManipulatorSubsystem m_ManipulatorSubsystem,
+        TopRollerSubsystem m_TopRollerSubsystem,
+        double m_pointX,
+        double m_pointY
+    ) {
+        Command command;
+
+        command = 
+            createIntakeCommand(m_ArmSubsystem, m_ManipulatorSubsystem, m_TopRollerSubsystem)
+            .andThen(new LimeLightIntakeCommand(m_SwerveDrive, new LimeLightUtility(), "", m_pointX, m_pointY))
+            .andThen(createStowArmCommand(m_ArmSubsystem, m_ManipulatorSubsystem, m_TopRollerSubsystem));
+
+        return command;
+    }
+
 
     /**
      * addAutoCommandEvent
