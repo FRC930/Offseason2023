@@ -9,6 +9,8 @@ import java.util.Map;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -39,7 +41,7 @@ import frc.robot.subsystems.arm.ArmSubsystem;
 import frc.robot.subsystems.manipulator.ManipulatorIORobot;
 import frc.robot.subsystems.manipulator.ManipulatorSubsystem;
 import frc.robot.utilities.CommandFactoryUtility;
-import frc.robot.utilities.LimeLightUtility;
+import frc.robot.utilities.GamePieceDetectionUtility;
 import frc.robot.utilities.RobotInformation;
 // import frc.robot.utilities.TimeOfFlightUtility;
 import frc.robot.utilities.RobotInformation.WhichRobot;
@@ -108,7 +110,7 @@ public class RobotContainer {
   // Utilities \\
   // private final TimeOfFlightUtility m_timeOfFlight = new TimeOfFlightUtility(1);
   private TargetScorePositionUtility m_targetScorePositionUtility = new TargetScorePositionUtility();
-  private LimeLightUtility m_limeLightUtility = new LimeLightUtility();
+  private GamePieceDetectionUtility m_LimeLightUtility = new GamePieceDetectionUtility("front");
 
   // Commands \\
   //private final RotateCommand m_rotateCommand = new RotateCommand(new Pose2d( 8.2423, 4.0513, new Rotation2d(0.0)), m_robotDrive);
@@ -140,7 +142,7 @@ public class RobotContainer {
 
     // eventCommandMap = new HashMap<>();
 
-    m_autoManager = new AutoCommandManager();
+    m_autoManager = new AutoCommandManager(m_LimeLightUtility);
     m_autoManager.addSubsystem(subNames.SwerveDriveSubsystem, m_robotDrive);
     m_autoManager.addSubsystem(subNames.ArmSubsystem, m_armSubsystem);
     m_autoManager.addSubsystem(subNames.ManipulatorSubsystem, m_manipulatorSubsystem);
@@ -230,8 +232,10 @@ public class RobotContainer {
       .onTrue(CommandFactoryUtility.createMaxSpeedCommand(m_manipulatorSubsystem))
       .onFalse(CommandFactoryUtility.createHoldSpeedCommand(m_manipulatorSubsystem));
 
+    //for testing purposes only
     m_driverController.leftBumper()
-      .whileTrue(new LimeLightIntakeCommand(m_robotDrive, m_limeLightUtility, "", 7.08, 4.59));   
+      .whileTrue(CommandFactoryUtility.createIntakeCommand(m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem)
+      .andThen(new LimeLightIntakeCommand(m_robotDrive, m_LimeLightUtility, new Pose2d(1.0, 0.0, new Rotation2d(0.0)))));   
   }
 
   void checkDSUpdate() {

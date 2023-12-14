@@ -5,6 +5,7 @@ import java.util.*;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -21,6 +22,7 @@ import frc.robot.subsystems.arm.ArmSubsystem;
 import frc.robot.subsystems.manipulator.ManipulatorSubsystem;
 import frc.robot.subsystems.TopRollerSubsystem;
 import frc.robot.utilities.CommandFactoryUtility;
+import frc.robot.utilities.GamePieceDetectionUtility;
 
 /**
  * <h3>AutonomouseCommandManager</h3>
@@ -29,7 +31,9 @@ import frc.robot.utilities.CommandFactoryUtility;
  * into the Shuffleboard.
  */
 public class AutoCommandManager {
-    public AutoCommandManager() {
+    private GamePieceDetectionUtility m_LimeLightUtility;
+    public AutoCommandManager(GamePieceDetectionUtility limeLightUtility) {
+        m_LimeLightUtility = limeLightUtility;
         SmartDashboard.putBoolean(this.getClass().getSimpleName()+"/CanTunePIDValues", TUNE_PID);
         SmartDashboard.putNumber(this.getClass().getSimpleName()+"/kPX", kPXController);
         SmartDashboard.putNumber(this.getClass().getSimpleName()+"/kIX", kIXController);
@@ -137,18 +141,24 @@ public class AutoCommandManager {
             s_SwerveDrive, "TwoScoreAndPickupBump_uuu", eventCommandMap
         );
 
-        Command VisionTestPath = new PathPlannerCommand(
-            s_SwerveDrive,
-            CommandFactoryUtility.createScoreHighCommand(m_armSubsystem, m_manipulatorSubsystem)
-            .andThen(new WaitCommand(1.0))
-            .andThen(CommandFactoryUtility.createStowArmCommand(m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem)), 
-                "NoBump1_uuu", //null,
-                CommandFactoryUtility.createAutoIntakecommand(s_SwerveDrive, m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem, 7.08, 4.59),
-                "NoBump2_uuu", //null,
-                CommandFactoryUtility.createAutoIntakecommand(s_SwerveDrive, m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem, 7.08, 3.37),
-                "NoBump3_uuu",
-                null,
-                eventCommandMap
+        Command VisionTestPath = new PathPlannerCommand( //Autonomous path that utilizes game piece detection
+                CommandFactoryUtility.createScoreHighCommand(m_armSubsystem, m_manipulatorSubsystem) //precommand
+                .andThen(new WaitCommand(1.0))
+                .andThen(CommandFactoryUtility.createStowArmCommand(m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem)),
+                s_SwerveDrive, "NoBump1_uuu", eventCommandMap, //first path
+                CommandFactoryUtility.createAutoIntakecommand( //auto intake command
+                    s_SwerveDrive, m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem, m_LimeLightUtility, 
+                    new Pose2d(7.08, 4.59, new Rotation2d(0.0))))
+            .andThen(new PathPlannerCommand(
+                CommandFactoryUtility.createStowArmCommand(m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem),
+                s_SwerveDrive, "NoBump2_uuu", eventCommandMap, //second path
+                CommandFactoryUtility.createAutoIntakecommand( //auto intake command
+                    s_SwerveDrive, m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem, m_LimeLightUtility, 
+                    new Pose2d(7.08, 3.37, new Rotation2d(-0.79)))
+                ))
+            .andThen(new PathPlannerCommand(
+                CommandFactoryUtility.createStowArmCommand(m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem),
+                s_SwerveDrive, "NoBump3_uuu", eventCommandMap) //third path
         );
 
 

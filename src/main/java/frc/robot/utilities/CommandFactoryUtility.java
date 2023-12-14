@@ -2,6 +2,7 @@ package frc.robot.utilities;
 
 import java.util.Map;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -139,20 +140,20 @@ public class CommandFactoryUtility {
         return command;
     }
     
-    public static Command createAutoIntakecommand(
-        SwerveDrive m_SwerveDrive,
-        ArmSubsystem m_ArmSubsystem,
-        ManipulatorSubsystem m_ManipulatorSubsystem,
-        TopRollerSubsystem m_TopRollerSubsystem,
-        double m_pointX,
-        double m_pointY
+    public static Command createAutoIntakecommand( //Autonomous intake command that utilizes the game piece detection camera
+        SwerveDrive SwerveDrive,
+        ArmSubsystem ArmSubsystem,
+        ManipulatorSubsystem ManipulatorSubsystem,
+        TopRollerSubsystem TopRollerSubsystem,
+        GamePieceDetectionUtility LimeLightUtility,
+        Pose2d Position2D
     ) {
         Command command;
 
         command = 
-            createIntakeCommand(m_ArmSubsystem, m_ManipulatorSubsystem, m_TopRollerSubsystem)
-            .andThen(new LimeLightIntakeCommand(m_SwerveDrive, new LimeLightUtility(), "", m_pointX, m_pointY))
-            .andThen(createStowArmCommand(m_ArmSubsystem, m_ManipulatorSubsystem, m_TopRollerSubsystem));
+            createIntakeCommand(ArmSubsystem, ManipulatorSubsystem, TopRollerSubsystem) //lowers the intake
+            .andThen(new LimeLightIntakeCommand(SwerveDrive, LimeLightUtility, Position2D)) //uses the camera to move to the game piece
+            .andThen(createStowArmCommand(ArmSubsystem, ManipulatorSubsystem, TopRollerSubsystem)); //stows the arm after intaking the game piece
 
         return command;
     }

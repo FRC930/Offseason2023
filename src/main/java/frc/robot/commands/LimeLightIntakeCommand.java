@@ -4,13 +4,14 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.SwerveDrive;
-import frc.robot.utilities.LimeLightUtility;
+import frc.robot.utilities.GamePieceDetectionUtility;
 
 /**
  * 
@@ -20,28 +21,25 @@ import frc.robot.utilities.LimeLightUtility;
  * 
  */
 public class LimeLightIntakeCommand extends CommandBase {
+    private final double MAX_STRAFE = 0.1; //TODO tune this value on the robot. Tune PID value first and set this value as a hard stop to prevent outlying data
+    private PIDController pid = new PIDController(0.01, 0.0, 0.0); //(0.01, 0.0, 0.0); //TODO tune this value
+
     private SwerveDrive m_SwerveDrive;
-    private LimeLightUtility m_LimeLight;
-    private String m_LimeLightName;
-    private double m_goalX;
-    private double m_goalY;
+    private GamePieceDetectionUtility m_LimeLight;
 
-    private double m_distance;
-
-    private double m_MaxStrafe = 1.0; //TODO tune this value on the robot. Tune PID value first and set this value as a hard stop to prevent outlying data
+    private Pose2d m_position;
     
     private double m_throttle;
     private double m_strafe;
 
-    private static double kDt = 0.0;
+    private double m_distance;
+    private double m_TimeElapsed = 0.0;
 
-    private final TrapezoidProfile.Constraints m_constraints =
+    private final TrapezoidProfile.Constraints m_constraints = //maximum velocity and acceleration for the command
         new TrapezoidProfile.Constraints(0.5, 0.5);
     private TrapezoidProfile.State m_goal;
     private TrapezoidProfile.State m_setpoint;
     private TrapezoidProfile profile;
-
-    PIDController pid = new PIDController(0.0, 0.0, 0.0); //(0.01, 0.0, 0.0); //TODO tune this value
 
 
     /**
@@ -50,18 +48,14 @@ public class LimeLightIntakeCommand extends CommandBase {
      * Uses game piece detection and a Trapezoidal Profile to smoothly and accurately intake a cube during autonomous
      * 
      * @param swerveDrive Swerve Drive
-     * @param limeLight LimeLightUtility
-     * @param limeLightName The name of the LimeLight so we can identify which camera we should be using
-     * @param goalX X position of the desired target in meters
-     * @param goalY Y position of the desired target in meters
+     * @param limeLight GamePieceDetectionUtility
+     * @param position Pose2d of the location of where the robot should go
      * 
      */
-    public LimeLightIntakeCommand(SwerveDrive swerveDrive, LimeLightUtility limeLight, String limeLightName, double goalX, double goalY) {
+    public LimeLightIntakeCommand(SwerveDrive swerveDrive, GamePieceDetectionUtility limeLight, Pose2d position) {
         m_SwerveDrive = swerveDrive;
         m_LimeLight = limeLight;
-        m_LimeLightName = limeLightName;
-        m_goalX = goalX;
-        m_goalY = goalY;
+        m_position = position;
         addRequirements(m_SwerveDrive);
     }
 
@@ -69,39 +63,40 @@ public class LimeLightIntakeCommand extends CommandBase {
     public void initialize() { 
         m_distance = Math.sqrt( //Uses the Pythagorean Theorem to calculate the total distance to the target
             Math.pow(
-                Math.abs(m_goalX - m_SwerveDrive.getPose().getX()), 
+                Math.abs(m_position.getX() - m_SwerveDrive.getPose().getX()), 
                 2.0
             )
             +
             Math.pow(
-                Math.abs(m_goalY - m_SwerveDrive.getPose().getY()),
+                Math.abs(m_position.getY() - m_SwerveDrive.getPose().getY()),
                 2.0
             )
         );
 
-        m_goal = new TrapezoidProfile.State(m_distance, 0);
-        m_setpoint = new TrapezoidProfile.State(0,0);
-        profile = new TrapezoidProfile(m_constraints, m_goal, m_setpoint);
+        //Creates the trapezoid profile using the given information
+        m_goal = new TrapezoidProfile.State(m_distance, 0); //sets the desired state to be the total distance away
+        m_setpoint = new TrapezoidProfile.State(0,0); //sets the current state at (0,0)
+        profile = new TrapezoidProfile(m_constraints, m_goal, m_setpoint); //combines everything into the trapezoid profile
     }
 
     @Override
     public void execute() {
-        m_strafe = MathUtil.clamp(pid.calculate(m_LimeLight.get_tx(m_LimeLightName), 0.0), -m_MaxStrafe, m_MaxStrafe);
-        Logger.getInstance().recordOutput("m_strafe", m_strafe);
-        m_setpoint = profile.calculate(kDt);
-        m_throttle = m_setpoint.velocity;
-        kDt += 0.02;
+        //uses a clamp and pid on the game piece detection camera to figure out the strafe (left & right)
+        m_strafe = MathUtil.clamp(pid.calculate(m_LimeLight.get_tx(), 0.0), -MAX_STRAFE, MAX_STRAFE); 
+        m_setpoint = profile.calculate(m_TimeElapsed);
+        m_throttle = m_setpoint.velocity; //sets the throttle (speed) to  the current point on the trapezoid profile
+        m_TimeElapsed += 0.02; //increases the timer  by 20 milliseconds
 
+        /* 
+         * This command utilitzes the swerve drive while it isn't field relative. 
+         * The swerve drive returns back to field relative after the command is used.
+         * This is located in RobotContainer at line 155
+        */
         m_SwerveDrive.drive(m_throttle, m_strafe, 0.0, false, true);
     }
 
     @Override
     public boolean isFinished() {
-        return profile.isFinished(kDt);
-    }
-
-    @Override
-    public void end(boolean interrupted) {
-        kDt = 0.0;
+        return profile.isFinished(m_TimeElapsed); //ends the command when the timer reaches the end of the trapezoid profile
     }
 }
