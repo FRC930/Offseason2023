@@ -7,6 +7,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.LimelightHelpers;
@@ -36,7 +37,7 @@ public class LimeLightIntakeCommand extends CommandBase {
     private double m_TimeElapsed = 0.0;
 
     private final TrapezoidProfile.Constraints m_constraints = //maximum velocity and acceleration for the command
-        new TrapezoidProfile.Constraints(0.5, 0.5);
+        new TrapezoidProfile.Constraints(0.25, 0.25);
     private TrapezoidProfile.State m_goal;
     private TrapezoidProfile.State m_setpoint;
     private TrapezoidProfile profile;
@@ -86,6 +87,9 @@ public class LimeLightIntakeCommand extends CommandBase {
         m_setpoint = profile.calculate(m_TimeElapsed);
         m_throttle = m_setpoint.velocity; //sets the throttle (speed) to  the current point on the trapezoid profile
         m_TimeElapsed += 0.02; //increases the timer  by 20 milliseconds
+
+        SmartDashboard.putNumber("throttle", m_throttle);
+        SmartDashboard.putNumber("strafe", m_strafe);
 
         /* 
          * This command utilitzes the swerve drive while it isn't field relative. 

@@ -110,7 +110,7 @@ public class RobotContainer {
   // Utilities \\
   // private final TimeOfFlightUtility m_timeOfFlight = new TimeOfFlightUtility(1);
   private TargetScorePositionUtility m_targetScorePositionUtility = new TargetScorePositionUtility();
-  private GamePieceDetectionUtility m_LimeLightUtility = new GamePieceDetectionUtility("front");
+  private GamePieceDetectionUtility m_LimeLightUtility = new GamePieceDetectionUtility("limelight-front");
 
   // Commands \\
   //private final RotateCommand m_rotateCommand = new RotateCommand(new Pose2d( 8.2423, 4.0513, new Rotation2d(0.0)), m_robotDrive);
@@ -234,8 +234,8 @@ public class RobotContainer {
 
     //for testing purposes only
     m_driverController.leftBumper()
-      .whileTrue(CommandFactoryUtility.createIntakeCommand(m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem)
-      .andThen(new LimeLightIntakeCommand(m_robotDrive, m_LimeLightUtility, new Pose2d(1.0, 0.0, new Rotation2d(0.0)))));   
+      .whileTrue(CommandFactoryUtility.createAutoIntakecommand(m_robotDrive, m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem, m_LimeLightUtility,new Pose2d(1.0, 0.0, new Rotation2d(0.0))))
+      .onFalse(CommandFactoryUtility.createStowArmCommand(m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem));
   }
 
   void checkDSUpdate() {

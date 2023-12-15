@@ -151,7 +151,8 @@ public class CommandFactoryUtility {
         Command command;
 
         command = 
-            createIntakeCommand(ArmSubsystem, ManipulatorSubsystem, TopRollerSubsystem) //lowers the intake
+            createIntakeCommand(ArmSubsystem, ManipulatorSubsystem, TopRollerSubsystem)
+            .andThen(ArmSubsystem.createWaitUntilAtAngleCommand().withTimeout(2.0)) //lowers the intake
             .andThen(new LimeLightIntakeCommand(SwerveDrive, LimeLightUtility, Position2D)) //uses the camera to move to the game piece
             .andThen(createStowArmCommand(ArmSubsystem, ManipulatorSubsystem, TopRollerSubsystem)); //stows the arm after intaking the game piece
 
