@@ -1,16 +1,11 @@
 package frc.robot.commands;
 
-import org.littletonrobotics.junction.Logger;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.utilities.GamePieceDetectionUtility;
 
@@ -104,3 +99,4 @@ public class LimeLightIntakeCommand extends CommandBase {
         return profile.isFinished(m_TimeElapsed); //ends the command when the timer reaches the end of the trapezoid profile
     }
 }
+

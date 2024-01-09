@@ -234,8 +234,7 @@ public class RobotContainer {
 
     //for testing purposes only
     m_driverController.leftBumper()
-      .whileTrue(CommandFactoryUtility.createAutoIntakecommand(m_robotDrive, m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem, m_LimeLightUtility,new Pose2d(1.0, 0.0, new Rotation2d(0.0))))
-      .onFalse(CommandFactoryUtility.createStowArmCommand(m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem));
+      .onTrue(CommandFactoryUtility.createAutoIntakecommand(m_robotDrive, m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem, m_LimeLightUtility,new Pose2d(0.5, 0.0, new Rotation2d(0.0))));
   }
 
   void checkDSUpdate() {
