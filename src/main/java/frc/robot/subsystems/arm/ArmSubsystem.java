@@ -12,11 +12,11 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
-import frc.robot.utilities.CommandFactoryUtility;
+
 
 public class ArmSubsystem extends SubsystemBase {
 
-    public static double STOW_POSITION = CommandFactoryUtility.STOW_POSITION;
+   
     
     private final ProfiledPIDController controller;
     private final ArmFeedforward ff;
@@ -45,7 +45,7 @@ public class ArmSubsystem extends SubsystemBase {
         
         m_armIO = armIO;
 
-        targetPosition = STOW_POSITION;
+     
     }
 
     /**
