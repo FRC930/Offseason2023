@@ -14,13 +14,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.AutoBalanceCommand;
-import frc.robot.commands.PPSwerveControllerCommand;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.arm.ArmSubsystem;
 import frc.robot.subsystems.manipulator.ManipulatorSubsystem;
 import frc.robot.subsystems.TopRollerSubsystem;
-import frc.robot.utilities.CommandFactoryUtility;
 
 /**
  * <h3>AutonomouseCommandManager</h3>
@@ -91,22 +88,7 @@ public class AutoCommandManager {
      * @param eventCommandMap a command that uses strings to returna command that we want to execute at a marker
      */
     public void initCommands(Map<String, Command> eventCommandMap) {
-        // Setup Logging for PathPlanner (for Ghost image)
-        // NOTE: Make sure same as setting correct PPSwerveControllerCommand (ours or theirs)
-        PPSwerveControllerCommand.setLoggingCallbacks(
-                null, 
-
-                (Pose2d targetPose) -> {
-                    // Log target pose
-                    pp_field2d.setRobotPose(targetPose);
-                    // May just want dashboard not on field2d
-                    Logger.getInstance().recordOutput("PathPlanner/DesiredPose",targetPose);
-                },
-                null, // logSetPoint
-
-                null // loggError
-
-        );
+       
         SmartDashboard.putData("PP_Field", pp_field2d);
         //Subsystems used by auto commands
         SwerveDrive s_SwerveDrive = (SwerveDrive) subsystemMap.get(subNames.SwerveDriveSubsystem.toString());
@@ -116,36 +98,12 @@ public class AutoCommandManager {
         TopRollerSubsystem m_topRollerSubsystem = (TopRollerSubsystem) subsystemMap.get(subNames.TopRollerSubsystem.toString());
         
         //Autonomous Commands
-        Command HighScoreBumpMobilityCommand = new PathPlannerCommand(
-            CommandFactoryUtility.createScoreHighCommand(m_armSubsystem, m_manipulatorSubsystem)
-            .andThen(new WaitCommand(1.0))
-            .andThen(CommandFactoryUtility.createStowArmCommand(m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem)),
-            s_SwerveDrive, "HighScoreBumpMobility_u", eventCommandMap
-        );
-
-        Command TwoScoreBumpCommand = new PathPlannerCommand(
-            CommandFactoryUtility.createScoreHighCommand(m_armSubsystem, m_manipulatorSubsystem)
-            .andThen(new WaitCommand(1.0))
-            .andThen(CommandFactoryUtility.createStowArmCommand(m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem)),
-            s_SwerveDrive, "TwoScoreBump_uu", eventCommandMap
-        );
-
-        Command TwoScoreAndPickupBumpCommand = new PathPlannerCommand(
-            CommandFactoryUtility.createScoreHighCommand(m_armSubsystem, m_manipulatorSubsystem)
-            .andThen(new WaitCommand(1.0))
-            .andThen(CommandFactoryUtility.createStowArmCommand(m_armSubsystem, m_manipulatorSubsystem, m_topRollerSubsystem)),
-            s_SwerveDrive, "TwoScoreAndPickupBump_uuu", eventCommandMap
-        );
+        
 
 
         // Adding options to the chooser in Shuffleboard/smartdashboard
         Boolean isBlue = (DriverStation.getAlliance() == Alliance.Blue);
         m_chooser.setDefaultOption("None", null);
-
-        m_chooser.addOption("HighScoreBumpMobility_u", HighScoreBumpMobilityCommand);
-        m_chooser.addOption("TwoScoreBump_uu", TwoScoreBumpCommand);
-        m_chooser.addOption("TwoScoreAndPickupBump_uuu", TwoScoreAndPickupBumpCommand);
-
         //Adding chooser to Shuffleboard/Smartdashboard
         SmartDashboard.putData("Auto choices", m_chooser);
     }
