@@ -2,9 +2,6 @@ package frc.robot.autos;
 
 import java.util.*;
 
-import org.littletonrobotics.junction.Logger;
-
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -13,11 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.*;
-import frc.robot.subsystems.arm.ArmSubsystem;
-import frc.robot.subsystems.manipulator.ManipulatorSubsystem;
-import frc.robot.subsystems.TopRollerSubsystem;
 
 /**
  * <h3>AutonomouseCommandManager</h3>
@@ -43,11 +36,7 @@ public class AutoCommandManager {
     private Field2d pp_field2d = new Field2d();
 
     public static enum subNames {
-        SwerveDriveSubsystem("SwerveDrive"),
-        // ElevatorSubsystem("Elevator"),
-        ArmSubsystem("Arm"),
-        ManipulatorSubsystem("Manipulator"),
-        TopRollerSubsystem("TopRoller");
+        SwerveDriveSubsystem("SwerveDrive");
 
         final String m_name;
 
@@ -92,15 +81,6 @@ public class AutoCommandManager {
         SmartDashboard.putData("PP_Field", pp_field2d);
         //Subsystems used by auto commands
         SwerveDrive s_SwerveDrive = (SwerveDrive) subsystemMap.get(subNames.SwerveDriveSubsystem.toString());
-        //ElevatorSubsystem m_elevatorSubsystem = (ElevatorSubsystem) subsystemMap.get(subNames.ElevatorSubsystem.toString());
-        ArmSubsystem m_armSubsystem = (ArmSubsystem) subsystemMap.get(subNames.ArmSubsystem.toString());
-        ManipulatorSubsystem m_manipulatorSubsystem = (ManipulatorSubsystem) subsystemMap.get(subNames.ManipulatorSubsystem.toString());
-        TopRollerSubsystem m_topRollerSubsystem = (TopRollerSubsystem) subsystemMap.get(subNames.TopRollerSubsystem.toString());
-        
-        //Autonomous Commands
-        
-
-
         // Adding options to the chooser in Shuffleboard/smartdashboard
         Boolean isBlue = (DriverStation.getAlliance() == Alliance.Blue);
         m_chooser.setDefaultOption("None", null);

@@ -68,8 +68,6 @@ public class SwerveModule extends SubsystemBase {
 
   private double m_simDriveEncoderPosition;
   private double m_simDriveEncoderVelocity;
-  private double m_simAngleDifference;
-  private double m_simTurnAngleIncrement;
   private int m_moduleNumber;
   // private Pose2d m_pose;
 
