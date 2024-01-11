@@ -3,24 +3,22 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
-
-import static frc.robot.Constants.LauncherConstants.*;
-
-import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.PWMLauncher;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.CANLauncher;
 
 // import frc.robot.subsystems.CANLauncher;
 
 /*This is an example of creating a command as a class. The base Command class provides a set of methods that your command
  * will override.
  */
-public class LaunchNote extends Command {
-  PWMLauncher m_launcher;
 
-  // CANLauncher m_launcher;
+public class LaunchNote extends CommandBase {
+  private static final  int kLauncherSpeed = 1;
+  private static final  int kLaunchFeederSpeed = 1;
+  CANLauncher m_launcher;
 
   /** Creates a new LaunchNote. */
-  public LaunchNote(PWMLauncher launcher) {
+  public LaunchNote(CANLauncher launcher) {
     // save the launcher system internally
     m_launcher = launcher;
 
