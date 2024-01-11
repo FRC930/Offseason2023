@@ -12,6 +12,7 @@ import frc.robot.subsystems.CANLauncher;
 public class PrepareLaunch extends CommandBase {
 
   private static final double kLauncherSpeed = 1;
+  private static final double kLauncherDelay = 1;
 
   CANLauncher m_launcher;
 
@@ -51,5 +52,9 @@ public class PrepareLaunch extends CommandBase {
     // Always return false so the command never ends on it's own. In this project we use a timeout
     // decorator on the command to end it.
     return false;
+  }
+
+  public static double getKLauncherDelay() {
+    return kLauncherDelay;
   }
 }

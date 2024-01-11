@@ -13,13 +13,17 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.AutoCommandManager;
 import frc.robot.autos.AutoCommandManager.subNames;
+import frc.robot.commands.LaunchNote;
+import frc.robot.commands.PrepareLaunch;
 import frc.robot.commands.SwerveLockCommand;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.simulation.FieldSim;
+import frc.robot.subsystems.CANLauncher;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.utilities.RobotInformation;
 import frc.robot.utilities.RobotInformation.WhichRobot;
@@ -71,6 +75,7 @@ public class RobotContainer {
   private final SwerveDrive m_robotDrive = new SwerveDrive(frontLeftModule, frontRightModule, backLeftModule, backRightModule);
   private final FieldSim m_fieldSim = new FieldSim(m_robotDrive);
   private final TeleopSwerve m_TeleopSwerve = new TeleopSwerve(m_robotDrive, m_driverController, translationAxis, strafeAxis, rotationAxis, true, true);
+  private final CANLauncher m_launcher = new CANLauncher();
 
   
   // Commands \\
@@ -111,6 +116,22 @@ public class RobotContainer {
     
     //Final Button Bindings
     //--DRIVER CONTROLLER--//
+    // Set the default command for the drivetrain to drive using the joysticks
+    m_robotDrive.setDefaultCommand(new TeleopSwerve(m_robotDrive, m_driverController, translationAxis, strafeAxis, rotationAxis, true, true));
+
+    /*Create an inline sequence to run when the operator presses and holds the A (green) button. Run the PrepareLaunch
+     * command for 1 seconds and then run the LaunchNote command */
+    m_codriverController
+        .a()
+        .whileTrue(
+            new PrepareLaunch(m_launcher)
+                .withTimeout(PrepareLaunch.getKLauncherDelay())
+                .andThen(new LaunchNote(m_launcher))
+                .handleInterrupt(() -> m_launcher.stop()));
+
+    // Set up a binding to run the intake command while the operator is pressing and holding the
+    // left Bumper
+    m_codriverController.leftBumper().whileTrue(m_launcher.getIntakeCommand());
 
     // Slow drive
     m_driverController.rightTrigger().onTrue(new InstantCommand(() -> m_TeleopSwerve.toggleSpeed()));

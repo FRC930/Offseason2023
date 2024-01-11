@@ -15,6 +15,7 @@ import frc.robot.subsystems.CANLauncher;
 public class LaunchNote extends CommandBase {
   private static final  int kLauncherSpeed = 1;
   private static final  int kLaunchFeederSpeed = 1;
+  
   CANLauncher m_launcher;
 
   /** Creates a new LaunchNote. */

@@ -8,13 +8,14 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utilities.SparkMaxWrapper;
 
 public class CANLauncher extends SubsystemBase {
   CANSparkMax m_launchWheel;
   CANSparkMax m_feedWheel;
  // sets the ID for the KLauncher, and feeder.
   private static final int kLauncherID = 6;
-  private static final int kFeederID = 5;
+  private static final int kFeederID = 7;
   // sets the K Feed, and Launcher limits' to 80
   private static final int kLauncherCurrentLimit = 80;
   private static final int kFeedCurrentLimit = 80;
@@ -24,8 +25,8 @@ public class CANLauncher extends SubsystemBase {
 
   /** Creates a new Launcher. */
   public CANLauncher() {
-    m_launchWheel = new CANSparkMax(kLauncherID, MotorType.kBrushed);
-    m_feedWheel = new CANSparkMax(kFeederID, MotorType.kBrushed);
+    m_launchWheel = new SparkMaxWrapper(kLauncherID, MotorType.kBrushed);
+    m_feedWheel = new SparkMaxWrapper(kFeederID, MotorType.kBrushed);
 
     m_launchWheel.setSmartCurrentLimit(kLauncherCurrentLimit);
     m_feedWheel.setSmartCurrentLimit(kFeedCurrentLimit);
