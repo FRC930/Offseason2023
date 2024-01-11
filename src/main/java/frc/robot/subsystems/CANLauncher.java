@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import static frc.robot.Constants.LauncherConstants.*;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -14,6 +12,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class CANLauncher extends SubsystemBase {
   CANSparkMax m_launchWheel;
   CANSparkMax m_feedWheel;
+ // sets the ID for the KLauncher, and feeder.
+  private static final int kLauncherID = 6;
+  private static final int kFeederID = 5;
+  // sets the K Feed, and Launcher limits' to 80
+  private static final int kLauncherCurrentLimit = 80;
+  private static final int kFeedCurrentLimit = 80;
+  // Sets the speed in reverse for intake.
+  private static final double kIntakeFeederSpeed = -.2;
+  private static final int kIntakeLauncherSpeed = -1;
 
   /** Creates a new Launcher. */
   public CANLauncher() {
