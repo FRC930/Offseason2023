@@ -54,7 +54,7 @@ public class RobotContainer {
         // Non-Competition robot attributes
         new RobotInformation(WhichRobot.PRACTICE_ROBOT,
           new SwerveModuleConstants(8, 9, 9, 107.578), 
-          new SwerveModuleConstants(11, 10, 10, 232.471), 
+          new SwerveModuleConstants(11, 10, 10, 57.393), 
           new SwerveModuleConstants(1, 3, 3, 90.615),
           new SwerveModuleConstants(18, 19, 19, 5.273)); 
 
@@ -121,7 +121,7 @@ public class RobotContainer {
 
     /*Create an inline sequence to run when the operator presses and holds the A (green) button. Run the PrepareLaunch
      * command for 1 seconds and then run the LaunchNote command */
-    m_codriverController
+    m_driverController
         .a()
         .whileTrue(
             new PrepareLaunch(m_launcher)
@@ -131,13 +131,18 @@ public class RobotContainer {
 
     // Set up a binding to run the intake command while the operator is pressing and holding the
     // left Bumper
-    m_codriverController.leftBumper().whileTrue(m_launcher.getIntakeCommand());
+     m_driverController.leftBumper().whileTrue(m_launcher.getIntakeCommand());
 
     // Slow drive
-    m_driverController.rightTrigger().onTrue(new InstantCommand(() -> m_TeleopSwerve.toggleSpeed()));
+     m_driverController.rightTrigger().onTrue(new InstantCommand(() -> m_TeleopSwerve.toggleSpeed()));
   
     //Lock wheels in an X position
-    m_driverController.a().toggleOnTrue(m_SwerveLockCommand);
+     m_driverController.x().toggleOnTrue(m_SwerveLockCommand);
+
+     m_driverController.b().whileTrue(new InstantCommand(() -> m_launcher.setFeedWheel(0.5)));
+    //m_driverController.b().whileTrue(new InstantCommand(() -> m_launcher.setLaunchWheel(0.5)));
+
+  
   }
 
   /**

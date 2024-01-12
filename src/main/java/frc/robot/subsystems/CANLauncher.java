@@ -25,8 +25,8 @@ public class CANLauncher extends SubsystemBase {
 
   /** Creates a new Launcher. */
   public CANLauncher() {
-    m_launchWheel = new SparkMaxWrapper(kLauncherID, MotorType.kBrushed);
-    m_feedWheel = new SparkMaxWrapper(kFeederID, MotorType.kBrushed);
+    m_launchWheel = new SparkMaxWrapper(kLauncherID, MotorType.kBrushless);
+    m_feedWheel = new SparkMaxWrapper(kFeederID, MotorType.kBrushless);
 
     m_launchWheel.setSmartCurrentLimit(kLauncherCurrentLimit);
     m_feedWheel.setSmartCurrentLimit(kFeedCurrentLimit);
