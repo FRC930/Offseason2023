@@ -139,9 +139,7 @@ public class RobotContainer {
     //Lock wheels in an X position
      m_driverController.x().toggleOnTrue(m_SwerveLockCommand);
 
-     m_driverController.b().whileTrue(new InstantCommand(() -> m_launcher.setFeedWheel(0.5)));
-    //m_driverController.b().whileTrue(new InstantCommand(() -> m_launcher.setLaunchWheel(0.5)));
-
+    
   
   }
 
