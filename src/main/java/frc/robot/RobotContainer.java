@@ -53,10 +53,10 @@ public class RobotContainer {
     RobotInformation robotInfo = 
         // Non-Competition robot attributes
         new RobotInformation(WhichRobot.PRACTICE_ROBOT,
-          new SwerveModuleConstants(8, 9, 9, 107.578), 
-          new SwerveModuleConstants(11, 10, 10, 57.393), 
-          new SwerveModuleConstants(1, 3, 3, 90.615),
-          new SwerveModuleConstants(18, 19, 19, 5.273)); 
+          new SwerveModuleConstants(8, 9, 9, 288.721), 
+          new SwerveModuleConstants(11, 10, 10, 58.184), 
+          new SwerveModuleConstants(1, 3, 3, 268.770),
+          new SwerveModuleConstants(18, 19, 19, 188.350)); 
 
   public static final int kDriverControllerPort = 0;
   public static final int kCodriverControllerPort = 1;
