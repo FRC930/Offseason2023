@@ -122,7 +122,7 @@ public class RobotContainer {
     /*Create an inline sequence to run when the operator presses and holds the A (green) button. Run the PrepareLaunch
      * command for 1 seconds and then run the LaunchNote command */
     m_driverController
-        .a()
+        .rightBumper()
         .whileTrue(
             new PrepareLaunch(m_launcher)
                 .withTimeout(PrepareLaunch.getKLauncherDelay())

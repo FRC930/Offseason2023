@@ -12,7 +12,7 @@ import frc.robot.subsystems.CANLauncher;
 public class PrepareLaunch extends CommandBase {
 
   private static final double kLauncherSpeed = 1;
-  private static final double kLauncherDelay = 1;
+  private static final double kLauncherDelay = 0.1;
 
   CANLauncher m_launcher;
 
