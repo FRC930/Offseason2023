@@ -20,8 +20,8 @@ public class CANLauncher extends SubsystemBase {
   private static final int kLauncherCurrentLimit = 80;
   private static final int kFeedCurrentLimit = 80;
   // Sets the speed in reverse for intake.
-  private static final double kIntakeFeederSpeed = -0.2;
-  private static final double kIntakeLauncherSpeed = -0.6;
+  private static final double kIntakeFeederSpeed = -0.3;
+  private static final double kIntakeLauncherSpeed = -0.3;
 
   /** Creates a new Launcher. */
   public CANLauncher() {
