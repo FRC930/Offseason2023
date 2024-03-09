@@ -13,8 +13,8 @@ import frc.robot.subsystems.CANLauncher;
  */
 
 public class LaunchNote extends CommandBase {
-  private static final  double kLauncherSpeed = 0.6;
-  private static final  double kLaunchFeederSpeed = 0.6;
+  private static final  double kLauncherSpeed = 0.2;
+  private static final  double kLaunchFeederSpeed = 0.2;
   
   CANLauncher m_launcher;
 
